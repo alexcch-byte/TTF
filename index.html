@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traditional Tang Soo Do</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1e40af; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+
+        .canvas-technique {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            aspect-ratio: 6/5;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .nav-active {
+            background-color: #1e3a8a !important;
+            color: white !important;
+            border-left: 4px solid #f59e0b;
+        }
+
+        /* Replaced @apply with plain CSS — @apply is unreliable on CDN Tailwind */
+        .manual-table th {
+            background-color: #f1f5f9;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .manual-table td {
+            padding: 0.75rem 1rem;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .manual-table tr:hover td {
+            background-color: #f8fafc;
+            transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden bg-slate-50 relative">
+
+    <!-- Mobile Header -->
+    <header class="md:hidden bg-slate-900 text-white flex justify-between items-center p-4 shadow-md z-40 shrink-0">
+        <div class="flex items-center gap-3">
+            <img src="a6dd21_71ed77483b6f4be7b7faf1ac57663145.gif" alt="Logo" width="40" height="40" class="w-10 h-10 shrink-0 drop-shadow-md">
+            <h1 class="text-base font-bold uppercase tracking-wider">Traditional Tang Soo Do</h1>
+        </div>
+        <button id="btn-mobile-open" class="text-slate-300 hover:text-white focus:outline-none p-1">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </header>
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
+
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-slate-900 text-slate-300 flex flex-col h-full shadow-2xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex-shrink-0">
+        <div class="p-6 text-center border-b border-slate-700 relative">
+            <button id="btn-mobile-close" class="md:hidden absolute top-4 right-4 text-slate-400 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <img src="a6dd21_71ed77483b6f4be7b7faf1ac57663145.gif" alt="Logo" width="80" height="80" class="w-20 h-20 mx-auto mb-3 shrink-0 drop-shadow-lg">
+            <h1 class="text-lg font-bold text-white uppercase tracking-wider leading-tight">Traditional Tang Soo Do</h1>
+            <p class="text-xs text-slate-400 mt-1">Complete Student Manual</p>
+        </div>
+        <nav class="flex-1 py-4 overflow-y-auto">
+            <ul class="space-y-1">
+                <li>
+                    <button data-nav="origins" id="nav-origins" class="nav-active w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                        <span>Origins & Philosophy</span>
+                        <span class="text-xs">&#x25B6;</span>
+                    </button>
+                </li>
+                <li>
+                    <button data-nav="curriculum" id="nav-curriculum" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                        <span>Curriculum & Rank</span>
+                        <span class="text-xs">&#x25B6;</span>
+                    </button>
+                </li>
+                <li>
+                    <button data-nav="terminology" id="nav-terminology" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                        <span>Terminology Dictionary</span>
+                        <span class="text-xs">&#x25B6;</span>
+                    </button>
+                </li>
+                <li>
+                    <button data-nav="techniques" id="nav-techniques" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                        <span>Techniques & Visuals</span>
+                        <span class="text-xs">&#x25B6;</span>
+                    </button>
+                </li>
+                <li>
+                    <button data-nav="sparring" id="nav-sparring" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                        <span>Sparring & Self-Defence</span>
+                        <span class="text-xs">&#x25B6;</span>
+                    </button>
+                </li>
+                <li>
+                    <button data-nav="forms" id="nav-forms" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                        <span>Forms (Hyung) Videos</span>
+                        <span class="text-xs">&#x25B6;</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+        <div class="p-4 border-t border-slate-700 text-xs text-center text-slate-500">
+            Traditional Tang Soo Do Federation
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 w-full bg-slate-50 h-full overflow-y-auto relative scroll-smooth">
+
+        <section id="sec-origins" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto block">
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-blue-900 pb-2 inline-block">Origins & Philosophy</h2>
+                <p class="text-slate-600 mt-4 leading-relaxed text-lg">
+                    "The art of Tang Soo Do Moo Duk Kwan demands mastery of the whole body—not merely kicking and punching. Technical skill without strong character is a burden on society. We practise to demonstrate virtue in action."
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start mb-12">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                    <h3 class="text-xl font-bold text-blue-900 mb-4">&#x2694; Historical Overview</h3>
+                    <p class="text-sm text-slate-700 mb-4 leading-relaxed">
+                        Founded by <strong>Grandmaster Hwang Kee on 9 November 1945</strong>, Tang Soo Do Moo Duk Kwan draws its roots from Korea's indigenous fighting arts (Soo Bahk Ki and Tae Kyun), combined with principles from Northern and Southern Chinese Kung Fu, and the philosophical teachings of Do (Tao), No Ja (Lao Tzu), and Lee Do Ja (Confucius).
+                    </p>
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                        Grandmaster Hwang Kee first encountered martial arts at the age of seven, witnessing a lone man successfully defend himself against a group of attackers using only his feet. By 1936, he trained with Chinese Kung Fu master Yang Kuk Jin.
+                    </p>
+                    <h4 class="font-bold text-slate-800 mb-2">What is Tang Soo Do Moo Duk Kwan?</h4>
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                        <strong>Tang Soo Do</strong> translates as "Hand Striking Way". <strong>Moo Duk Kwan</strong> translates as "Institute of Martial Virtue". Soo Bahk Ki (combat with bare hands and feet) is the oldest Korean martial art, approximately 2,000 years old. What separates it is its versatility and philosophy.
+                    </p>
+                    <h3 class="text-xl font-bold text-blue-900 mb-3 mt-6">&#x265E; About the Federation</h3>
+                    <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                        <li>Fully certified instructors under the Traditional Tang Soo Do Federation.</li>
+                        <li>Qualified in emergency first aid and SAQ (Speed, Agility, Quickness).</li>
+                        <li>C.R.B. (criminal record) checked.</li>
+                        <li>Comprehensive professional indemnity insurance.</li>
+                        <li>Minimum of 1st Degree Dan within the Federation.</li>
+                    </ul>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col items-center">
+                        <h3 class="text-xl font-bold text-blue-900 mb-2">Development Balance</h3>
+                        <div class="chart-container">
+                            <canvas id="attributesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-900 p-6 rounded-xl shadow-md text-white">
+                        <h3 class="text-xl font-bold text-amber-500 mb-4">Eight Key Concepts</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <div><strong class="text-amber-400">Yong Gi:</strong> Courage (acting rightly)</div>
+                            <div><strong class="text-amber-400">Chung Shin Tong Il:</strong> Concentration (mind/body unity)</div>
+                            <div><strong class="text-amber-400">In Neh:</strong> Endurance (persevering)</div>
+                            <div><strong class="text-amber-400">Chung Jik:</strong> Honesty (integrity)</div>
+                            <div><strong class="text-amber-400">Kyum Son:</strong> Humility (remaining teachable)</div>
+                            <div><strong class="text-amber-400">Him Cho Chung:</strong> Control of power</div>
+                            <div><strong class="text-amber-400">Shin Chook:</strong> Tension/relaxation (efficiency)</div>
+                            <div><strong class="text-amber-400">Wan Gup:</strong> Speed control (timing/tempo)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                <h3 class="text-2xl font-bold text-blue-900 mb-6 text-center">Ten Articles of Faith</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">1</span><span class="text-sm font-semibold text-slate-800">Be loyal to your country</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">2</span><span class="text-sm font-semibold text-slate-800">Be obedient to your parents</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">3</span><span class="text-sm font-semibold text-slate-800">Be loving between husband and wife</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">4</span><span class="text-sm font-semibold text-slate-800">Be cooperative between brothers and sisters</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">5</span><span class="text-sm font-semibold text-slate-800">Be respectful to your elders</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">6</span><span class="text-sm font-semibold text-slate-800">Be faithful between students and teachers</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">7</span><span class="text-sm font-semibold text-slate-800">Be faithful between friends</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">8</span><span class="text-sm font-semibold text-slate-800">Know the difference between good and evil</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">9</span><span class="text-sm font-semibold text-slate-800">Never retreat in battle</span></div>
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg text-center"><span class="block text-2xl font-bold text-amber-500 mb-2">10</span><span class="text-sm font-semibold text-slate-800">Always finish what you start</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-curriculum" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-blue-900 pb-2 inline-block">Curriculum & Rank Structure</h2>
+                <p class="text-slate-600 mt-4 leading-relaxed">
+                    Total minimum time from white belt to 1st Dan: <strong>NOT earlier than 3 years and 6 months</strong>. All testing is subject to instructor approval. Students must attend a minimum of twice per week.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-10">
+                <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">Belt Progression</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm manual-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Minimum Time</th>
+                                <th>Belt Colour and Trim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>10th Gup</td><td>2 months</td><td>White belt - no trim</td></tr>
+                            <tr><td>9th Gup</td><td>2 months</td><td>Yellow belt - no trim</td></tr>
+                            <tr><td>8th Gup</td><td>2 months</td><td>Orange belt - no trim</td></tr>
+                            <tr><td>7th Gup</td><td>4 months</td><td>Orange belt, 1 green tag</td></tr>
+                            <tr><td>6th Gup</td><td>4 months</td><td>Green belt, no tag, green trim</td></tr>
+                            <tr><td>5th Gup</td><td>4 months</td><td>Green belt, 1 red tag, green trim</td></tr>
+                            <tr><td>4th Gup</td><td>4 months</td><td>Green belt, 2 red tags, green trim</td></tr>
+                            <tr><td>3rd Gup</td><td>6 months</td><td>Red belt, no tag, red trim</td></tr>
+                            <tr><td>2nd Gup</td><td>6 months</td><td>Red belt, 1 blue tag, red trim</td></tr>
+                            <tr><td>1st Gup</td><td>6 months</td><td>Red belt, 2 blue tags, red trim</td></tr>
+                            <tr><td>1st Pre-test</td><td>4 months</td><td>No change (2 blue tags)</td></tr>
+                            <tr><td>1st Dan</td><td>Upon permission</td><td>Midnight blue belt and trim</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">Forms Rotation Curriculum</h3>
+                    <div class="p-6">
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">10th-9th Gup</span> <span>Gi Cho Hyung Il Bu (to 1st Ki Hap)</span></li>
+                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">9th-8th Gup</span> <span>Gi Cho Hyung Il Bu + E Bu</span></li>
+                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 1</span> <span>Pyung Ahn Oh Dan</span></li>
+                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 2</span> <span>Pyung Ahn Cho Dan</span></li>
+                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 3</span> <span>Pyung Ahn Sa Dan</span></li>
+                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 4</span> <span>Pyung Ahn E Dan</span></li>
+                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 5</span> <span>Pyung Ahn Sam Dan</span></li>
+                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">3rd-2nd Gup</span> <span>Pyung Ahn Oh Dan + Bassai So</span></li>
+                            <li class="flex justify-between"><span class="font-semibold text-slate-800">2nd-1st Gup</span> <span>Bassai So + Bassai Dae</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+                    <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">Breaking Requirements (Kyok Pa)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm manual-table">
+                            <thead>
+                                <tr><th>Level</th><th>Children (7-12 yrs)</th><th>Adults (13 yrs+)</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>10th-8th Gup</td><td>Hammer fist / Front snap kick</td><td>Knife hand</td></tr>
+                                <tr><td>Rotation 1</td><td>Side snap kick (both legs)</td><td>Side snap kick (both legs)</td></tr>
+                                <tr><td>Rotation 2</td><td>Turning side kick (both legs)</td><td>Turning side kick (both legs)</td></tr>
+                                <tr><td>Rotation 3</td><td>Back kick (both legs)</td><td>Back kick (both legs)</td></tr>
+                                <tr><td>Rotation 4</td><td>Roundhouse kick (both legs)</td><td>Roundhouse kick (both legs)</td></tr>
+                                <tr><td>Rotation 5</td><td>Outside-to-inside kick (both legs)</td><td>Outside-to-inside kick (both legs)</td></tr>
+                                <tr><td>2nd-1st Gup</td><td>Hand + Foot technique</td><td>Hand + Foot + flying kick</td></tr>
+                                <tr><td>1st Dan</td><td>Outside/inside axe kick</td><td>Outside/inside axe kick</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 mb-8">
+                <h3 class="text-xl font-bold text-blue-900 mb-4">Early Gup Requirements & Flying Kicks (E Dan Cha Gi)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+                    <div>
+                        <h4 class="font-bold text-slate-800 border-b pb-2 mb-2">10th-9th Gup Long Range Sparring</h4>
+                        <ol class="list-decimal pl-4 space-y-2 text-slate-700">
+                            <li>Low block (back stance) - reverse high punch - right front kick - left roundhouse kick.</li>
+                            <li>Low block (back stance) - reverse high punch - right roundhouse kick - left roundhouse kick.</li>
+                        </ol>
+                        <h4 class="font-bold text-slate-800 border-b pb-2 mb-2 mt-4">9th-8th Gup Long Range Sparring</h4>
+                        <ol class="list-decimal pl-4 space-y-2 text-slate-700">
+                            <li>Low block - reverse high punch - right roundhouse - left roundhouse - right back kick.</li>
+                            <li>Low block - reverse high punch - right roundhouse - left roundhouse - left jump front kick.</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-800 border-b pb-2 mb-2">Flying Kick Requirements (Run & Jump)</h4>
+                        <ul class="space-y-1 text-slate-700">
+                            <li><strong>10th-8th Gup:</strong> Front snap kick</li>
+                            <li><strong>Rotation 1:</strong> Side kick / Roundhouse kick</li>
+                            <li><strong>Rotation 2:</strong> Back kick / 360° back kick</li>
+                            <li><strong>Rotation 3:</strong> I/O kick, O/I kick, spinning I/O, spinning O/I</li>
+                            <li><strong>Rotation 4:</strong> Front snap kick / Split kick / Split kick (feet together)</li>
+                            <li><strong>Rotation 5:</strong> Reverse roundhouse / 360° roundhouse</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-terminology" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto hidden">
+            <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-blue-900 pb-2 inline-block">Terminology Dictionary</h2>
+                    <p class="text-slate-600 mt-4 leading-relaxed max-w-2xl">
+                        Mastery of terminology is essential for Dojang etiquette and instruction. Use the search to translate components (e.g. searching "Sang Dan" will show all high section techniques).
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden mb-8">
+                <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">Numbers & Counting</h3>
+                <div class="p-4 grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">1</span> Native: Ha-na<br>Sino: Il (First)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">2</span> Native: Dool<br>Sino: E (Second)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">3</span> Native: Set<br>Sino: Sam (Third)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">4</span> Native: Net<br>Sino: Sa (Fourth)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">5</span> Native: Da-sot<br>Sino: O (Fifth)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">6</span> Native: Yo-sot<br>Sino: Yuk (Sixth)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">7</span> Native: Il-gop<br>Sino: Chil (Seventh)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">8</span> Native: Yo-dol<br>Sino: Pal (Eighth)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">9</span> Native: A-hop<br>Sino: Ku (Ninth)</div>
+                    <div class="p-3 bg-slate-50 rounded border"><span class="block font-bold text-slate-800">10</span> Native: Yol<br>Sino: Sip (Tenth)</div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                <div class="flex flex-col md:flex-row gap-4 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <input type="text" id="termSearch" placeholder="Search English or Korean (e.g. 'Punch', 'Kong Kyuk')..." class="flex-1 px-4 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 shadow-sm">
+                    <select id="termCategory" class="px-4 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 bg-white shadow-sm font-semibold text-slate-700">
+                        <option value="all">All Categories</option>
+                        <option value="General">General / People</option>
+                        <option value="Commands">Commands</option>
+                        <option value="Directional">Directional</option>
+                        <option value="Stances">Stances (Yase/Soh Ki)</option>
+                        <option value="Hand Techniques">Hand Techniques</option>
+                        <option value="Leg Techniques">Leg Techniques</option>
+                        <option value="Anatomy">Anatomy</option>
+                        <option value="Weapons/Striking">Weapons/Striking</option>
+                    </select>
+                </div>
+
+                <div class="overflow-x-auto max-h-[600px] overflow-y-auto border border-slate-200 rounded-lg">
+                    <table class="min-w-full text-left text-sm whitespace-nowrap manual-table relative">
+                        <thead class="sticky top-0 bg-slate-100 shadow-sm z-10">
+                            <tr>
+                                <th class="px-6 py-3 font-semibold text-slate-800">Korean Term</th>
+                                <th class="px-6 py-3 font-semibold text-slate-800">English Translation</th>
+                                <th class="px-6 py-3 font-semibold text-slate-800">Category</th>
+                            </tr>
+                        </thead>
+                        <tbody id="termTableBody" class="bg-white">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-techniques" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-amber-500 pb-2 inline-block">Techniques & Combinations</h2>
+                <p class="text-slate-600 mt-4 leading-relaxed">
+                    Visual references for fundamental stances, alongside the required kicking and advanced hand/foot combinations for higher Gup grades.
+                </p>
+            </div>
+
+            <div class="mb-10 bg-slate-100 p-6 rounded-xl border border-slate-200">
+                <h3 class="text-2xl font-bold text-blue-900 mb-6 flex items-center">
+                    <span class="mr-2 text-amber-500">&#x25A0;</span> Visual References: Stances & Punches
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                        <canvas id="canvas-front-stance" class="canvas-technique mb-4"></canvas>
+                        <h4 class="font-bold text-lg text-slate-800">Chun Kul Soh Ki</h4>
+                        <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2 rounded">Front Stance: 60% Front, 40% Back.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                        <canvas id="canvas-back-stance" class="canvas-technique mb-4"></canvas>
+                        <h4 class="font-bold text-lg text-slate-800">Hu Kul Soh Ki</h4>
+                        <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2 rounded">Back Stance: 70% Back, 30% Front.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center">
+                        <canvas id="canvas-horse-stance" class="canvas-technique mb-4"></canvas>
+                        <h4 class="font-bold text-lg text-slate-800">Kee Mah Soh Ki</h4>
+                        <p class="text-xs text-slate-600 mt-2 bg-slate-50 p-2 rounded">Horse Stance: 50/50. Wide base.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center flex flex-col md:flex-row items-center">
+                        <canvas id="canvas-center-punch" class="canvas-technique md:w-1/2 mb-4 md:mb-0"></canvas>
+                        <div class="md:w-1/2 md:pl-6 text-left">
+                            <h4 class="font-bold text-xl text-slate-800">Choong Dan Kong Kyuk</h4>
+                            <p class="text-sm text-slate-600">Middle Section Punch. Targeting solar plexus. Pull opposite hand to hip.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm text-center flex flex-col md:flex-row items-center">
+                        <canvas id="canvas-high-punch" class="canvas-technique md:w-1/2 mb-4 md:mb-0"></canvas>
+                        <div class="md:w-1/2 md:pl-6 text-left">
+                            <h4 class="font-bold text-xl text-slate-800">Sang Dan Kong Kyuk</h4>
+                            <p class="text-sm text-slate-600">High Section Punch. Targeting philtrum. Arm angles upward.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden h-fit">
+                    <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">New Kicking Techniques (6th-4th Gup)</h3>
+                    <div class="p-6">
+                        <p class="text-xs text-slate-500 mb-4 uppercase tracking-wide font-semibold">Each combo performed step-through</p>
+                        <ol class="list-decimal pl-5 space-y-4 text-sm text-slate-700">
+                            <li><strong class="text-slate-900">Ahp Cha Gi + Dull Ryo Cha Gi</strong><br>Front snap kick &rarr; Step-through roundhouse kick</li>
+                            <li><strong class="text-slate-900">Ahneso Pahkuro Cha Gi + Pahkeso Ahnero Cha Gi</strong><br>Inside-to-outside kick &rarr; Outside-to-inside kick</li>
+                            <li><strong class="text-slate-900">Dull Ryo Cha Gi + Dwi Cha Gi</strong><br>Roundhouse kick &rarr; Back kick</li>
+                            <li><strong class="text-slate-900">Pahku So Ahneso Cha Gi + Dwi Dull Ryo Pahku Ro Cha Gi</strong><br>Outside-to-inside kick &rarr; Spinning inside-to-outside kick</li>
+                            <li><strong class="text-slate-900">Dull Ryo Yup Cha Gi + Dwi Cha Gi + Dull Ryo Yup Cha Gi</strong><br>Turning side kick &rarr; Back kick &rarr; Turning side kick</li>
+                            <li><strong class="text-slate-900">Ahp Cha Gi &rarr; Dull Ryo Cha Gi &rarr; Dwi Cha Gi</strong><br>Front snap &rarr; Roundhouse &rarr; Back kick</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden h-fit">
+                    <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">Advanced Combinations (7th-4th Gup)</h3>
+                    <div class="p-6 space-y-4">
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 1</h4>
+                            <p class="text-xs text-slate-600 mt-1">Chun Dan Kong Kyuk - Teroso Chun Dan Kong Kyuk (Middle punch front stance &rarr; pivot/turn second middle punch)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 2</h4>
+                            <p class="text-xs text-slate-600 mt-1">Chun Gul Sang Soo Mahk Kee - Ha Dan Soo Do Mahk Kee - Teroso Kwan Soo Kong Kyuk (Two-fist middle block front &rarr; step low knife hand back stance &rarr; reverse spear hand front)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 3</h4>
+                            <p class="text-xs text-slate-600 mt-1">Chun Dan Soo Do Mahk Kee - Chun Dan Hu Gul Yup Mahkee - Dwi Torrio Pahl Coop Kong Kyuk (Mid knife hand block &rarr; side block back stance &rarr; spinning elbow horse stance)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 4</h4>
+                            <p class="text-xs text-slate-600 mt-1">Chun Dan Soo Do Kong Kyuk - Teroso Yuk Soo Do Kong Kyuk - Hu Gul Ha Dan Mahk Kee (Mid knife hand attack &rarr; turn ridge hand &rarr; reverse plier hand block back stance)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 5</h4>
+                            <p class="text-xs text-slate-600 mt-1">Yuk Soo Kong Kyuk - Hu Gul Sang Soo Mahk Kee - Teroso Jip Kye Son (Defensive punch back stance &rarr; two-fist block &rarr; reverse plier hand back stance)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 6</h4>
+                            <p class="text-xs text-slate-600 mt-1">Ahneso Pahkuro Cha Gi - Dwi Torrio Ahneso Pahkuro Cha Gi (Inside-outside kick &rarr; jumping spinning inside-outside kick using both legs)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 7</h4>
+                            <p class="text-xs text-slate-600 mt-1">San Dan Ahp Cha Gi - Chun Dan Dwi Cha Gi - Pahkeso Ahnu Ro Cha Gi (High front kick &rarr; mid back kick &rarr; outside-inside kick)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 8</h4>
+                            <p class="text-xs text-slate-600 mt-1">Chun Dan Dull Ryo Yup Cha Gi - San Dan Up Cha Gi - Chun Dan Dwee Cha Gi (Mid turning side kick &rarr; high axe kick &rarr; mid back kick)</p>
+                        </div>
+                        <div class="border-b pb-3">
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 9</h4>
+                            <p class="text-xs text-slate-600 mt-1">San Dan Dull Ryo Cha Gi - Chun Dan Dwi Cha Gi - San Dan Ahp Cha Gi (High roundhouse &rarr; mid back kick &rarr; high front snap)</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-blue-800 text-sm">Combo 10</h4>
+                            <p class="text-xs text-slate-600 mt-1">Pahkeso Ahnu Ro Cha Gi - Chun Dan or San Dan Yup Cha Gi - E Dan Punta Cha Gi (Outside-inside kick &rarr; mid/high side kick &rarr; jumping spinning O/I kick)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-sparring" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto hidden">
+            <div class="mb-8 flex flex-col justify-between border-b-4 border-red-700 pb-4">
+                <h2 class="text-3xl font-bold text-slate-900">Sparring & Self-Defence</h2>
+                <p class="text-slate-600 mt-2">Comprehensive guide to One-Step Sparring (Ill Soo Sik Deh Ryun) and Ho Sin Sool (Self-Defence grabs).</p>
+            </div>
+
+            <h3 class="text-2xl font-bold text-blue-900 mb-6 bg-slate-200 inline-block px-4 py-1 rounded">Ho Sin Sool (Self-Defence Grabs)</h3>
+
+            <div class="bg-white p-5 rounded-xl border border-orange-200 shadow-sm mb-6">
+                <h4 class="font-bold text-lg text-red-700 mb-4 border-b pb-2">Rotation 1 — Environmental Grabs</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-700">
+                    <div>
+                        <strong class="text-slate-900 block mb-1">Hair Grab (Front)</strong>
+                        Step back into back stance. Grab attacker's hand covering hair, snapping it to hip to break grip. Cover position: back fist to temple (horse stance), reverse punch to solar plexus (front stance).
+                    </div>
+                    <div>
+                        <strong class="text-slate-900 block mb-1">Belt Grab (Front)</strong>
+                        Step back into back stance, escape the grip by snapping hand to hip. Cover position: back fist to temple (horse stance), reverse punch to solar plexus (front stance).
+                    </div>
+                    <div>
+                        <strong class="text-slate-900 block mb-1">Tackle (Front, Under Arms)</strong>
+                        Step back with arms wide to deflect and control tackle. Cover position: back fist to temple (horse stance), reverse punch to solar plexus (front stance).
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h4 class="font-bold text-lg text-red-700 mb-4 border-b pb-2">Cross Hand Grabs (Rotations 2-3)</h4>
+                    <ul class="space-y-4 text-sm text-slate-700">
+                        <li><strong class="text-slate-900 block mb-1">Grab 1</strong> Escape side stance over arm. Knife hand (neck), Palm heel (chin, front stance), Spear hand (groin).</li>
+                        <li><strong class="text-slate-900 block mb-1">Grab 2</strong> Over-hand wrist grip to chest. Escape and apply elbow pressure. Knife hand (neck), Palm heel (jaw line, swap front stance direction), Spear hand (groin).</li>
+                        <li><strong class="text-slate-900 block mb-1">Grab 3</strong> Rotate under arm 180°. Wrist lock/break (palm down). Head butt (face).</li>
+                        <li><strong class="text-slate-900 block mb-1">Grab 4</strong> Rotate wrist (thumb pressure point). Knife hand to back of wrist moving forward. Elbow attack (temple).</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h4 class="font-bold text-lg text-red-700 mb-4 border-b pb-2">Same Side Grabs (Rotations 4-5)</h4>
+                    <ul class="space-y-4 text-sm text-slate-700">
+                        <li><strong class="text-slate-900 block mb-1">Grab 1</strong> Escape to side stance. Back fist (temple), Hammer fist (groin, horse stance), Ridge hand (jaw line, front stance).</li>
+                        <li><strong class="text-slate-900 block mb-1">Grab 2</strong> Rotate hand, catch attacker's hand moving forward. Knife hand (neck). Knee attack (solar plexus) pulling attacker forward.</li>
+                        <li><strong class="text-slate-900 block mb-1">Grab 3</strong> Move under arm rotating 180°. Wrist lock/break. Punch (temple). Front kick (rib) or roundhouse (solar plexus).</li>
+                        <li><strong class="text-slate-900 block mb-1">Grab 4</strong> Rotate wrist, step back. Wrist lock (middle finger knuckle). Front kick (temple). Elbow strike (back of neck).</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm md:col-span-2">
+                    <h4 class="font-bold text-lg text-red-700 mb-4 border-b pb-2">Shoulder, Bear Hugs & Lapel Grabs (Rotations 3-5)</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-slate-700">
+                        <div>
+                            <strong class="text-slate-900 block mb-1">Shoulder Grab (Side)</strong> Rotate arm counter-clockwise, upward arm bar/elbow pressure. Punch to face.<br><br>
+                            <strong class="text-slate-900 block mb-1">Double Shoulder Grab</strong> Step back, double upward block. Lift front leg, double knuckle strike to pectorals in front stance.
+                        </div>
+                        <div>
+                            <strong class="text-slate-900 block mb-1">Bear Hug (Behind)</strong> Shift side, groin knife hand. Drop to horse stance, free arms. Double rib elbow. Reverse middle punch.<br><br>
+                            <strong class="text-slate-900 block mb-1">Bear Hug (Front)</strong> Grab attacker body, knee to groin. Drop to horse stance, double elbow strike. Reverse middle punch.
+                        </div>
+                        <div>
+                            <strong class="text-slate-900 block mb-1">Single Lapel Grab</strong> Grab attacker wrist, pressure elbow. Arm bar stepping across into front stance. Elbow strike to their elbow.<br><br>
+                            <strong class="text-slate-900 block mb-1">Double Lapel Grab</strong> Grab one over, one under. Twist 45° across body into horse stance. Trap arms, inward elbow to head.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-blue-900 mb-6 bg-slate-200 inline-block px-4 py-1 rounded mt-8">One-Step Sparring (Ill Soo Sik Deh Ryun)</h3>
+
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <h4 class="bg-slate-100 px-4 py-3 font-bold text-slate-800 border-b">10th-8th Gup One-Steps</h4>
+                        <ol class="list-decimal pl-8 pr-4 py-4 space-y-3 text-sm text-slate-700">
+                            <li>Simultaneous knife hand defence and front punch.</li>
+                            <li>Left hand reverse punch, simultaneous knife hand defence and front punch.</li>
+                            <li>High front snap kick - reverse middle punch - high front punch - step back.</li>
+                            <li>High turning side kick - reverse middle punch - high front punch - step back.</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <h4 class="bg-slate-100 px-4 py-3 font-bold text-slate-800 border-b">Rotation 1 (Pyung Ahn Oh Dan Level)</h4>
+                        <ol class="list-decimal pl-8 pr-4 py-4 space-y-3 text-sm text-slate-700">
+                            <li>Palm heel defence, knife hand to neck, spinning knife hand to neck.</li>
+                            <li>Low X-block against front kick, grab leg, reverse punch to centre.</li>
+                            <li>Step back right foot, double roundhouse kick (middle ball / high instep).</li>
+                            <li>Step left, reverse knife hand defence, grab shoulders, low side snap kick behind right knee.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <h4 class="bg-slate-100 px-4 py-3 font-bold text-slate-800 border-b">Rotation 2 (Pyung Ahn Cho Dan)</h4>
+                        <ol class="list-decimal pl-8 pr-4 py-4 space-y-3 text-sm text-slate-700">
+                            <li>Step back left foot, palm heel down (45°) defence, knife hand to neck.</li>
+                            <li>Step back left foot, reverse knife hand defence, centre punch and high punch in horse stance.</li>
+                            <li>Step to left, middle side kick, knife hand to neck, step back.</li>
+                            <li>Step to left, middle roundhouse kick, knife hand to neck, reverse punch to solar plexus.</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <h4 class="bg-slate-100 px-4 py-3 font-bold text-slate-800 border-b">Rotation 3 (Pyung Ahn Sa Dan)</h4>
+                        <ol class="list-decimal pl-8 pr-4 py-4 space-y-3 text-sm text-slate-700">
+                            <li>Step back, knife hand defence, collar grab, knee attack to body.</li>
+                            <li>Step back, knife hand defence, head grab, knee attack to head.</li>
+                            <li>Pivot left 45° front stance, reverse knife hand defence, centre side snap kick into armpit, step back.</li>
+                            <li>Step back right foot, outside/inside kick defence, side kick to head.</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <h4 class="bg-slate-100 px-4 py-3 font-bold text-slate-800 border-b">Rotation 4 (Pyung Ahn E Dan)</h4>
+                        <ol class="list-decimal pl-8 pr-4 py-4 space-y-3 text-sm text-slate-700">
+                            <li>Simultaneous knife hand defence and attack to temple.</li>
+                            <li>Step back, knife hand defence, grab, step in with elbow attack.</li>
+                            <li>Step back right foot, turning side kick to body and head.</li>
+                            <li>Knife hand defence, round kick, right back-fist to temple, spinning elbow to solar plexus.</li>
+                        </ol>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <h4 class="bg-slate-100 px-4 py-3 font-bold text-slate-800 border-b">Rotation 5 (Pyung Ahn Sam Dan)</h4>
+                        <ol class="list-decimal pl-8 pr-4 py-4 space-y-3 text-sm text-slate-700">
+                            <li>Palm heel block, elbow to body, hammer fist to groin, back fist to bridge of nose.</li>
+                            <li>Knife hand defence, elbow lock.</li>
+                            <li>Twist, knife hand defence, hook kick to head, back fist to temple, pivot, spinning elbow to solar plexus.</li>
+                            <li>Outside-to-inside kick (partner retreats), spinning back hook kick.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h4 class="font-bold text-lg text-slate-800 border-b pb-2 mb-4">3rd–2nd Gup One-Steps</h4>
+                    <p class="text-xs text-slate-500 mb-4 uppercase tracking-wide">Attacker: Low defence then stepping high punch (right foot back).</p>
+                    <div class="space-y-4 text-sm text-slate-700">
+                        <p><strong class="text-slate-900">Tech 1:</strong> Step 45° inward right into back stance. Simultaneous left knife hand block and right high punch moving into horse stance. Step back left leg to fighting stance. High front snap kick right (front) leg — reverse middle punch — high punch. Land right leg forward in front stance.</p>
+                        <p><strong class="text-slate-900">Tech 2:</strong> Step 45° inward right into back stance. Left hand middle punch, chamber both hands to right hip. Simultaneous left knife hand block and right high punch moving into horse stance. Step back right leg to fighting stance. High turning side kick right leg — reverse middle punch — high punch. Land right leg forward in front stance.</p>
+                        <p><strong class="text-slate-900">Tech 3:</strong> Step back left leg into back stance, outside/inside palm block with right arm. Cross arms, inward right elbow strike to middle stepping forward into horse stance. Turn counter-clockwise, feet together. High back kick with left leg — reverse middle punch right — high punch left. Land in front stance.</p>
+                        <p><strong class="text-slate-900">Tech 4:</strong> Step back left leg into fighting stance, outside/inside palm block with right arm. Cross arms, inward right elbow strike to middle stepping forward into horse stance. Back turning left elbow strike. Turn clockwise back to fighting stance, right leg back. High roundhouse kick right leg — reverse middle punch left — outside/inside high knife hand right. Land in front stance.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h4 class="font-bold text-lg text-slate-800 border-b pb-2 mb-4">Advanced: 1st Gup to 1st Dan</h4>
+                    <p class="text-xs text-slate-500 mb-4 uppercase tracking-wide">Attacker: Low defence then stepping high punch. Odd techniques = right foot back; Even = left foot back (mirror).</p>
+                    <div class="space-y-4 text-sm text-slate-700">
+                        <p><strong class="text-slate-900">Tech 1 (Right back):</strong> 45° inside/outside knife block left — twisting right mid punch — twisting left high punch — grab outstretched hand — high right roundhouse kick.</p>
+                        <p><strong class="text-slate-900">Tech 2 (Left back):</strong> 45° inside/outside knife block right — twisting left mid punch — twisting right high punch — grab outstretched hand — high left roundhouse kick.</p>
+                        <p><strong class="text-slate-900">Tech 3 (Right back):</strong> Outside-inside block right — twisting left mid punch — twisting right high punch — step left behind right — high right side kick.</p>
+                        <p><strong class="text-slate-900">Tech 4 (Left back):</strong> Outside-inside block left — twisting right mid punch — twisting left high punch — step right behind left — high left side kick.</p>
+                        <p><strong class="text-slate-900">Tech 5 (Right back):</strong> Right mid front kick — step forward front stance O/I block right — reverse mid punch left — hold arm — inside-to-outside face kick with left leg.</p>
+                        <p><strong class="text-slate-900">Tech 6 (Left back):</strong> Left mid front kick — step forward front stance O/I block left — reverse mid punch right — hold arm — inside-to-outside face kick with right leg.</p>
+                        <p><strong class="text-slate-900">Tech 7 (Right back, arm bent):</strong> Left mid front kick — step back to horse stance — step front back leg right roundhouse — without placing foot deliver spinning back inside-outside kick to arm — reverse high punch left to temple.</p>
+                        <p><strong class="text-slate-900">Tech 8 (Left back, arm bent):</strong> Right mid front kick — step back to horse stance — step front back leg left roundhouse — without placing foot deliver spinning back inside-outside kick to arm — reverse high punch right to temple.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sec-forms" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 border-b-4 border-blue-900 pb-2 inline-block">Forms (Hyung) Library</h2>
+                <p class="text-slate-600 mt-4 leading-relaxed">
+                    Hyung (Forms) are a sequence of defensive and offensive techniques against imaginary opponents. Click the links below to view reference demonstrations by <strong class="text-slate-800">Success Martial Arts</strong>.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="formsGrid">
+            </div>
+
+            <div class="mt-8 bg-blue-50 border border-blue-200 p-6 rounded-lg">
+                <h4 class="font-bold text-blue-900 mb-2">Important Note on Forms Training</h4>
+                <p class="text-sm text-blue-800">
+                    "The passage of time alone does not qualify a student for testing." - Master T.J. Trudgill.
+                    Video references are supplements to, not replacements for, Dojang instruction. Always consult your instructor for specific federation requirements.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- DATA --- //
+
+        const dictionary = [
+            { korean: "Tang Soo Do", english: "Hand Striking Way (The Art)", category: "General" },
+            { korean: "Moo Duk Kwan", english: "Institute of Martial Virtue (The Style)", category: "General" },
+            { korean: "Kwan Jang Nim", english: "Grandmaster", category: "General" },
+            { korean: "Chung Sa Nim", english: "Senior Master Instructor", category: "General" },
+            { korean: "Sa Bom Nim", english: "Master Instructor", category: "General" },
+            { korean: "Kyo Sa Nim", english: "Instructor", category: "General" },
+            { korean: "Sun Beh Nim", english: "Senior grade / senior student", category: "General" },
+            { korean: "Cho Bo Ja", english: "Beginner", category: "General" },
+            { korean: "Yu Dan Ja", english: "Dan holder (midnight blue belt)", category: "General" },
+            { korean: "Yu Gup Ja", english: "Gup holder (colour belt)", category: "General" },
+            { korean: "Do Jang", english: "Training hall", category: "General" },
+            { korean: "Do Bok", english: "Training uniform", category: "General" },
+            { korean: "Dee", english: "Belt", category: "General" },
+            { korean: "Hyung", english: "Form (kata)", category: "General" },
+            { korean: "Gi Cho", english: "Basic", category: "General" },
+            { korean: "Dae Ryun", english: "Sparring", category: "General" },
+            { korean: "Ki Hap", english: "Shout/focused spirit yell", category: "General" },
+            { korean: "Soo Bahk Do", english: "Ancient Korean predecessor art to Tang Soo Do", category: "General" },
+            { korean: "Cho Kyo Nim", english: "Assistant Instructor", category: "General" },
+            { korean: "Shim Sa Kwan Nim", english: "Test Examiner", category: "General" },
+            { korean: "Nim", english: "Term of respect (honorific suffix)", category: "General" },
+            { korean: "Kwon Won", english: "Student / club member", category: "General" },
+            { korean: "Gup", english: "Colour belt grade (below Dan)", category: "General" },
+            { korean: "Dan", english: "Black belt degree", category: "General" },
+            { korean: "Ko Dan Ja", english: "Senior black belt (4th Degree and above)", category: "General" },
+            { korean: "Hu Beh", english: "Junior gup member", category: "General" },
+            { korean: "Sun Beh", english: "Senior gup member", category: "General" },
+            { korean: "Choong Shim", english: "Balance", category: "General" },
+            { korean: "Chung Seh", english: "Posture", category: "General" },
+            { korean: "Neh Gung", english: "Internal power", category: "General" },
+            { korean: "Weh Gung", english: "External power", category: "General" },
+            { korean: "Shim Gung", english: "Mental / spiritual power", category: "General" },
+            { korean: "Pyung Ahn", english: "Balance and comfort (name of the Pyung Ahn form series)", category: "General" },
+            { korean: "Moo Do", english: "Martial Way", category: "General" },
+            { korean: "Moo Do Chung Shin", english: "Martial spirit", category: "General" },
+            { korean: "Shim Sa", english: "Test / examination", category: "General" },
+            { korean: "Ku Ryung", english: "Count", category: "General" },
+            { korean: "Kuk Gi", english: "National flag", category: "General" },
+            { korean: "Kwan Gi", english: "Flag of school or style", category: "General" },
+            { korean: "Kyok Pa", english: "Breaking", category: "General" },
+            { korean: "Il Soo Sik Deh Ryun", english: "One-step sparring", category: "General" },
+            { korean: "Ho Sin Sul", english: "Self-defence", category: "General" },
+            { korean: "Soo Gi", english: "Hand techniques (collective)", category: "General" },
+            { korean: "Jok Gi", english: "Foot techniques (collective)", category: "General" },
+            { korean: "Cha Ryut", english: "Attention", category: "Commands" },
+            { korean: "Choon Bee", english: "Ready", category: "Commands" },
+            { korean: "Shi Jock", english: "Begin", category: "Commands" },
+            { korean: "Ba Ro", english: "Return to ready position", category: "Commands" },
+            { korean: "Dwee Ro Tora", english: "Turn around (180 degrees)", category: "Commands" },
+            { korean: "Shio", english: "Relax/at ease", category: "Commands" },
+            { korean: "Anju", english: "Sit", category: "Commands" },
+            { korean: "Muk Nyum", english: "Meditation", category: "Commands" },
+            { korean: "Kuk Gi Bay Ray", english: "Salute the flag", category: "Commands" },
+            { korean: "Kwan Jang Nim E Kyung Yet", english: "Bow to Grandmaster", category: "Commands" },
+            { korean: "Sa Bom Nim E Kyung Yet", english: "Bow to Master Instructor", category: "Commands" },
+            { korean: "Sun Beh Nim E Kyung Yet", english: "Bow to Senior Student", category: "Commands" },
+            { korean: "Kam Sa Hap Ni Da", english: "Thank you", category: "Commands" },
+            { korean: "Kyung Ret", english: "Bow", category: "Commands" },
+            { korean: "Kyo Sa Nim Kay Kyung Ret", english: "Bow to Instructor", category: "Commands" },
+            { korean: "Shim Sa Kwan Nim Kay Kyung Ret", english: "Bow to Examiners", category: "Commands" },
+            { korean: "Tora", english: "Turn", category: "Commands" },
+            { korean: "Shi Sun", english: "Look / focus eyes on target", category: "Commands" },
+            { korean: "E La Sut", english: "Stand up", category: "Commands" },
+            { korean: "Ku Ryung E Mat Cho So", english: "Move by instructor's count", category: "Commands" },
+            { korean: "Ku Ryung Up Shi", english: "Move by student's own count", category: "Commands" },
+            { korean: "Kong Kyuk", english: "Attack / offensive technique", category: "Directional" },
+            { korean: "Bang Uh", english: "Defence / defensive technique", category: "Directional" },
+            { korean: "Ahneso", english: "From the inside (inward-to-outward)", category: "Directional" },
+            { korean: "Pahkeso", english: "From the outside (outward-to-inward)", category: "Directional" },
+            { korean: "Ahnu Ro", english: "Toward the inside", category: "Directional" },
+            { korean: "Pahku Ro", english: "Toward the outside", category: "Directional" },
+            { korean: "Sang Dan", english: "High section (head/neck)", category: "Directional" },
+            { korean: "Choong Dan", english: "Middle section (torso)", category: "Directional" },
+            { korean: "Ha Dan", english: "Low section (below waist)", category: "Directional" },
+            { korean: "Wheng Jin", english: "Horizontal/lateral advance", category: "Directional" },
+            { korean: "Yuk Jin", english: "Reverse/backward direction", category: "Directional" },
+            { korean: "O Ring Jok", english: "Right", category: "Directional" },
+            { korean: "Wen Jok", english: "Left", category: "Directional" },
+            { korean: "Ahp", english: "Front", category: "Directional" },
+            { korean: "Yup", english: "Side", category: "Directional" },
+            { korean: "Dwi", english: "Back / behind", category: "Directional" },
+            { korean: "Hu Jin", english: "Backward", category: "Directional" },
+            { korean: "Chun Jin", english: "Forward", category: "Directional" },
+            { korean: "Chungle Yase / Chun Kul Soh Ki", english: "Front stance", category: "Stances" },
+            { korean: "Hugal Yase / Hu Kul Soh Ki", english: "Back stance", category: "Stances" },
+            { korean: "Keema Yase / Kee Mah Soh Ki", english: "Horse riding stance", category: "Stances" },
+            { korean: "Sakorip Yase", english: "Horse riding stance at an angle", category: "Stances" },
+            { korean: "Jhoon Bee Jaseh", english: "Ready stance", category: "Stances" },
+            { korean: "Kyo Cha Rip Jaseh", english: "Cross leg stance", category: "Stances" },
+            { korean: "Deh Ryun Jaseh", english: "Fighting stance", category: "Stances" },
+            { korean: "Bal Cha Ki Jhoon Bee Jaseh", english: "Ready for kick stance", category: "Stances" },
+            { korean: "Ha Dan Mahk Kee", english: "Low block", category: "Hand Techniques" },
+            { korean: "Choong Dan Kong Kyuk", english: "Middle punch", category: "Hand Techniques" },
+            { korean: "Sang Dan Kong Kyuk", english: "High punch", category: "Hand Techniques" },
+            { korean: "Sang Dan Mahk Kee", english: "High block", category: "Hand Techniques" },
+            { korean: "Ahneso Pahku Ro Mahk Kee", english: "Inside-to-outside block", category: "Hand Techniques" },
+            { korean: "Pahkeso Ahnu Ro Mahk Kee", english: "Outside-to-inside block", category: "Hand Techniques" },
+            { korean: "Ssang Soo Mahk Kee", english: "Two-fist middle block", category: "Hand Techniques" },
+            { korean: "Sang Soo Ha Dan Mahk Kee", english: "Lower X-block (crossed wrists)", category: "Hand Techniques" },
+            { korean: "Yup Mahk Kee", english: "Side block", category: "Hand Techniques" },
+            { korean: "Soo Do", english: "Knife hand strike/block", category: "Hand Techniques" },
+            { korean: "Yuk Soo", english: "Knife hand block + reverse punch", category: "Hand Techniques" },
+            { korean: "Kwan Soo Kong Kyuk", english: "Spear hand attack", category: "Hand Techniques" },
+            { korean: "E Jee Kwan Soo Kong Kyuk", english: "Two-finger spear hand attack", category: "Hand Techniques" },
+            { korean: "Yuk Soo Do Kong Kyuk", english: "Ridge hand strike", category: "Hand Techniques" },
+            { korean: "Sang Dan Soo Do Kong Kyuk", english: "High knife hand attack (head/neck height)", category: "Hand Techniques" },
+            { korean: "Kong Bang", english: "Combined attack and defence", category: "Hand Techniques" },
+            { korean: "Wheng Jin Kong Kyuk", english: "Horizontal/lateral punch", category: "Hand Techniques" },
+            { korean: "Sang Soo", english: "Double fist (both hands simultaneously)", category: "Hand Techniques" },
+            { korean: "Mahk Kee", english: "Block (generic)", category: "Hand Techniques" },
+            { korean: "Choong Dan Soo Do Mahk Kee", english: "Knife hand middle block", category: "Hand Techniques" },
+            { korean: "Ssang Soo Sang Dan Mahk Kee", english: "High X-block (crossed wrists)", category: "Hand Techniques" },
+            { korean: "Hu Gul Ha Dan Mahk Kee", english: "Back stance low block", category: "Hand Techniques" },
+            { korean: "Hu Gul Sang Dan Mahk Kee", english: "Back stance high block", category: "Hand Techniques" },
+            { korean: "Hu Gul Ssang Soo Choong Dan Mahk Kee", english: "Back stance two-fist middle block", category: "Hand Techniques" },
+            { korean: "Hu Gul Ssang Soo Sang Dan Mahk Kee", english: "Back stance two-fist high block", category: "Hand Techniques" },
+            { korean: "Hu Gul Ha Dan Soo Do Mahk Kee", english: "Back stance knife hand low block", category: "Hand Techniques" },
+            { korean: "Hu Gul Choong Dan Soo Do Mahk Kee", english: "Back stance knife hand middle block", category: "Hand Techniques" },
+            { korean: "Hu Gul Sang Dan Soo Do Mahk Kee", english: "Back stance knife hand high block", category: "Hand Techniques" },
+            { korean: "Jung Kwon Kong Kyuck", english: "Fore fist punch", category: "Hand Techniques" },
+            { korean: "Soo Do Kong Kyuck", english: "Knife hand attack", category: "Hand Techniques" },
+            { korean: "Cap Kwon Kong Kyuck", english: "Back fist attack", category: "Hand Techniques" },
+            { korean: "Jip Kye Son", english: "Plier hand attack", category: "Hand Techniques" },
+            { korean: "Pahl Koop Kong Kyuck", english: "Elbow strike", category: "Hand Techniques" },
+            { korean: "Jang Kwon Kong Kyuck", english: "Palm heel strike", category: "Hand Techniques" },
+            { korean: "Kwon Do Kong Kyuck", english: "Hammer fist strike", category: "Hand Techniques" },
+            { korean: "Il Ji Kwon Soo", english: "One-finger spear hand attack", category: "Hand Techniques" },
+            { korean: "Il Ji Kwon", english: "One-knuckle fist attack", category: "Hand Techniques" },
+            { korean: "Sohn Mok Deung Kong Kyuck", english: "Upper wrist attack", category: "Hand Techniques" },
+            { korean: "Yoo Kwon Kong Kyuck", english: "Soft fist attack", category: "Hand Techniques" },
+            { korean: "Ahp Podo Oll Ri Gi", english: "Front stretch kick", category: "Leg Techniques" },
+            { korean: "Ahp Cha Gi", english: "Front snap kick", category: "Leg Techniques" },
+            { korean: "Yup Podo Oll Ri Gi", english: "Side stretch kick", category: "Leg Techniques" },
+            { korean: "Yup Podo Cha Gi / Yup Cha Gi", english: "Side snap kick", category: "Leg Techniques" },
+            { korean: "Dull Ryo Cha Gi", english: "Roundhouse kick", category: "Leg Techniques" },
+            { korean: "Dwi Cha Gi", english: "Back kick", category: "Leg Techniques" },
+            { korean: "Dwee Dull Ryo Cha Gi", english: "Spinning back hook kick", category: "Leg Techniques" },
+            { korean: "Pahkeso Ahnero Cha Gi", english: "Outside-to-inside kick (crescent)", category: "Leg Techniques" },
+            { korean: "Ahneso Pahkuro Cha Gi", english: "Inside-to-outside kick", category: "Leg Techniques" },
+            { korean: "Yup Hu Ri Gi", english: "Side hook kick", category: "Leg Techniques" },
+            { korean: "Moo Roop Cha Gi", english: "Knee kick", category: "Leg Techniques" },
+            { korean: "Bit Cha Ki", english: "Diagonal kick", category: "Leg Techniques" },
+            { korean: "E Dan", english: "Jumping (prefix for kicks)", category: "Leg Techniques" },
+            { korean: "Cha Gi", english: "Kick (generic)", category: "Leg Techniques" },
+            { korean: "Dwi Ahneso Pahkuro Cha Gi", english: "Spinning inside-to-outside kick", category: "Leg Techniques" },
+            { korean: "Dwi Yup Hu Ri Gi", english: "Spinning hook kick", category: "Leg Techniques" },
+            { korean: "Peet Cha Gi", english: "Reverse roundhouse kick", category: "Leg Techniques" },
+            { korean: "Dan Jun", english: "Abdomen/centre of gravity", category: "Anatomy" },
+            { korean: "Pal", english: "Arm", category: "Anatomy" },
+            { korean: "Ka Sun", english: "Chest", category: "Anatomy" },
+            { korean: "Pal Coop", english: "Elbow", category: "Anatomy" },
+            { korean: "Swe Gol", english: "Collar bone", category: "Anatomy" },
+            { korean: "Sohn Ka Rak", english: "Finger", category: "Anatomy" },
+            { korean: "Bahl", english: "Foot", category: "Anatomy" },
+            { korean: "Ko Whan", english: "Groin", category: "Anatomy" },
+            { korean: "Shim Jang", english: "Heart", category: "Anatomy" },
+            { korean: "Twi Kumchi", english: "Heel", category: "Anatomy" },
+            { korean: "O Ka E", english: "Shoulder", category: "Anatomy" },
+            { korean: "Mu Rup", english: "Knee", category: "Anatomy" },
+            { korean: "Mok", english: "Neck / throat", category: "Anatomy" },
+            { korean: "Ko", english: "Nose", category: "Anatomy" },
+            { korean: "Pyo", english: "Bone", category: "Anatomy" },
+            { korean: "In Choong", english: "Philtrum", category: "Anatomy" },
+            { korean: "Myung Chi", english: "Solar plexus", category: "Anatomy" },
+            { korean: "Sohn", english: "Hand", category: "Anatomy" },
+            { korean: "Sohn Mon", english: "Wrist", category: "Anatomy" },
+            { korean: "Hurri", english: "Waist", category: "Anatomy" },
+            { korean: "Pal Mok", english: "Ankle", category: "Anatomy" },
+            { korean: "Bahl Ga Rak", english: "Toes", category: "Anatomy" },
+            { korean: "Nun", english: "Eye", category: "Anatomy" },
+            { korean: "Kwi", english: "Ear", category: "Anatomy" },
+            { korean: "Tuk", english: "Chin", category: "Anatomy" },
+            { korean: "Eema", english: "Forehead", category: "Anatomy" },
+            { korean: "Tok", english: "Jaw", category: "Anatomy" },
+            { korean: "Da Ri", english: "Leg", category: "Anatomy" },
+            { korean: "Bal Deung", english: "Instep (top of foot)", category: "Anatomy" },
+            { korean: "Chung Kwon", english: "Fore fist", category: "Weapons/Striking" },
+            { korean: "Kap Kwon", english: "Back fist", category: "Weapons/Striking" },
+            { korean: "Jang Kwon", english: "Heel of palm", category: "Weapons/Striking" },
+            { korean: "Kwan Soo", english: "Spear hand", category: "Weapons/Striking" },
+            { korean: "Soo Do", english: "Knife hand", category: "Weapons/Striking" },
+            { korean: "Yuk Soo Do", english: "Ridge hand", category: "Weapons/Striking" },
+            { korean: "Chu Mok", english: "Fist", category: "Weapons/Striking" }
+        ];
+
+        const hyungList = [
+            { name: "Kee Cho Hyung Il Bu", level: "10th–9th Gup", count: "20", search: "Success Martial Arts Kicho Hyung Il Bu Tang Soo Do", color: "bg-white border-slate-300 text-slate-800" },
+            { name: "Kee Cho Hyung Ee Bu", level: "9th–8th Gup", count: "20", search: "Success Martial Arts Kicho Hyung Ee Bu Tang Soo Do", color: "bg-white border-slate-300 text-slate-800" },
+            { name: "Kee Cho Hyung Sam Bu", level: "Orange Belt", count: "20", search: "Success Martial Arts Kicho Hyung Sam Bu Tang Soo Do", color: "bg-orange-100 border-orange-400 text-orange-900" },
+            { name: "Pyung Ahn O Dan", level: "Rotation 1 — Orange/Green Belt", count: "28", search: "Success Martial Arts Pyung Ahn O Dan Tang Soo Do", color: "bg-orange-100 border-orange-400 text-orange-900" },
+            { name: "Pyung Ahn Cho Dan", level: "Rotation 2 — Green Belt", count: "22", search: "Success Martial Arts Pyung Ahn Cho Dan Tang Soo Do", color: "bg-green-100 border-green-500 text-green-900" },
+            { name: "Pyung Ahn Sa Dan", level: "Rotation 3 — Green Belt", count: "29", search: "Success Martial Arts Pyung Ahn Sa Dan Tang Soo Do", color: "bg-green-100 border-green-500 text-green-900" },
+            { name: "Pyung Ahn Ee Dan", level: "Rotation 4 — Green Belt", count: "29", search: "Success Martial Arts Pyung Ahn Ee Dan Tang Soo Do", color: "bg-green-100 border-green-500 text-green-900" },
+            { name: "Pyung Ahn Sam Dan", level: "Rotation 5 — Red Belt", count: "27", search: "Success Martial Arts Pyung Ahn Sam Dan Tang Soo Do", color: "bg-red-600 border-red-700 text-white" },
+            { name: "Bassai So", level: "3rd–1st Gup", count: "33", search: "Success Martial Arts Bassai So Tang Soo Do", color: "bg-slate-900 border-slate-700 text-white" },
+            { name: "Bassai Dae", level: "2nd–1st Gup", count: "52", search: "Success Martial Arts Bassai Dae Tang Soo Do", color: "bg-slate-900 border-slate-700 text-white" },
+            { name: "Naihanchi Hyung Cho Dan", level: "Advanced", count: "33", search: "Success Martial Arts Naihanchi Cho Dan Tang Soo Do", color: "bg-slate-900 border-slate-700 text-white" },
+            { name: "Bong Hyung Cho Dan", level: "Weapons", count: "26", search: "Success Martial Arts Bong Hyung Cho Dan Tang Soo Do", color: "bg-amber-800 border-amber-900 text-white" }
+        ];
+
+        // --- STATE --- //
+
+        const sections = ['origins', 'curriculum', 'terminology', 'techniques', 'sparring', 'forms'];
+        let canvasesDrawn = false;
+
+        // --- UTILITIES --- //
+
+        function debounce(fn, ms) {
+            let timer;
+            return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+        }
+
+        // --- INIT --- //
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-nav]').forEach(btn => {
+                btn.addEventListener('click', () => nav(btn.dataset.nav));
+            });
+
+            document.getElementById('btn-mobile-open').addEventListener('click', toggleMobileMenu);
+            document.getElementById('btn-mobile-close').addEventListener('click', toggleMobileMenu);
+            document.getElementById('mobile-overlay').addEventListener('click', toggleMobileMenu);
+
+            const debouncedFilter = debounce(filterTerms, 200);
+            document.getElementById('termSearch').addEventListener('input', debouncedFilter);
+            document.getElementById('termCategory').addEventListener('change', filterTerms);
+
+            populateTerms();
+            populateForms();
+            initChart();
+        });
+
+        // --- NAVIGATION --- //
+
+        function toggleMobileMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+            sidebar.classList.toggle('-translate-x-full', !isHidden);
+            overlay.classList.toggle('hidden', !isHidden);
+        }
+
+        function nav(target) {
+            sections.forEach(s => {
+                const btn = document.getElementById(`nav-${s}`);
+                const el = document.getElementById(`sec-${s}`);
+                if (btn) btn.classList.toggle('nav-active', s === target);
+                if (el) {
+                    el.classList.toggle('hidden', s !== target);
+                    el.classList.toggle('block', s === target);
+                }
+            });
+
+            if (target === 'techniques' && !canvasesDrawn) {
+                drawAllTechniques();
+                canvasesDrawn = true;
+            }
+
+            document.querySelector('main').scrollTop = 0;
+
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('mobile-overlay');
+                if (sidebar && overlay) {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            }
+        }
+
+        // --- CHART (LAZY LOADED) --- //
+
+        function initChart() {
+            if (window.Chart) { renderChart(); return; }
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+            script.onload = renderChart;
+            document.head.appendChild(script);
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('attributesChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'polarArea',
+                data: {
+                    labels: ['Discipline', 'Flexibility', 'Focus', 'Power', 'Speed', 'Respect'],
+                    datasets: [{
+                        label: 'Development Focus',
+                        data: [90, 85, 95, 80, 85, 100],
+                        backgroundColor: [
+                            'rgba(30, 58, 138, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(15, 23, 42, 0.7)',
+                            'rgba(220, 38, 38, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(56, 189, 248, 0.7)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0,0,0,0.05)' } } },
+                    plugins: { legend: { position: 'right', labels: { font: { family: 'Inter', size: 11 } } } }
+                }
+            });
+        }
+
+        // --- TERMINOLOGY --- //
+
+        const audioBase = "https://tangsoodoworld.com/terminology_audio/";
+        const audioMap = {
+            // General
+            "Tang Soo Do": "Tang_Soo_Do.wav",
+            "Soo Bahk Do": "Soo_Bahk_Do.wav",
+            "Moo Duk Kwan": "Moo_Duk_Kwan.wav",
+            "Do Jang": "Dojang.wav",
+            "Do Bok": "Do_Bok.wav",
+            "Dee": "Dee.wav",
+            "Kwan Jang Nim": "Kwan_Jang_Nim.wav",
+            "Sa Bom Nim": "Sa_Bom_Nim.wav",
+            "Kyo Sa Nim": "Kyo_Sa_Nim.wav",
+            "Cho Kyo Nim": "Cho_Kyo_Nim.wav",
+            "Shim Sa Kwan Nim": "Shim_Sa_Kwan_Nim.wav",
+            "Nim": "Nim.wav",
+            "Kwon Won": "Kwon_Won.wav",
+            "Cho Bo Ja": "Cho_Bo_Ja.wav",
+            "Gup": "Gup.wav",
+            "Yu Gup Ja": "Yu_Gup_Ja.wav",
+            "Dan": "Dan.wav",
+            "Yu Dan Ja": "Yu_Dan_Ja.wav",
+            "Ko Dan Ja": "Ko_Dan_Ja.wav",
+            "Hu Beh": "Hu_Beh.wav",
+            "Sun Beh": "Sun_Beh.wav",
+            "Gi Cho": "Kee_Cho.wav",
+            "Mahk Kee": "Mahk_Kee.wav",
+            "Kong Kyuk": "Kong_Kyuck.wav",
+            "Cha Gi": "Chagi.wav",
+            "Hyung": "Hyung.wav",
+            "Ki Hap": "Ki_Hap.wav",
+            "Choong Shim": "Choong_Shim.wav",
+            "Chung Seh": "Chung_Seh.wav",
+            "Neh Gung": "Neh_Gung.wav",
+            "Weh Gung": "Weh_Gung.wav",
+            "Shim Gung": "Shim_Gung.wav",
+            "Pyung Ahn": "Pyung_Ahn.wav",
+            "Moo Do": "Moo_Do.wav",
+            "Moo Do Chung Shin": "Moo_Do_Chung_Shin.wav",
+            "Shim Sa": "Shim_Sa.wav",
+            "Ku Ryung": "Ku_Ryung.wav",
+            "Kuk Gi": "Kuk_Gi.wav",
+            "Kwan Gi": "Kwan_Gi.wav",
+            "Kyok Pa": "Kyok_Pa.wav",
+            "Dae Ryun": "Deh_Ryun.wav",
+            "Il Soo Sik Deh Ryun": "Il_Soo_Sik_Deh_Ryun.wav",
+            "Ho Sin Sul": "Ho_Sin_Sul.wav",
+            "Soo Gi": "Soo_Gi.wav",
+            "Jok Gi": "Jok_Gi.wav",
+            // Commands
+            "Cha Ryut": "Cha_Ryut.wav",
+            "Ba Ro": "Ba_Ro.wav",
+            "Shio": "Shio.wav",
+            "Anju": "An_Jo.wav",
+            "Muk Nyum": "Muk_Nyum.wav",
+            "Kuk Gi Bay Ray": "Kuk_Gi_Bay_Ray.wav",
+            "Kwan Jang Nim E Kyung Yet": "Kwan_Jang_Nim_Kay_Kyung_Ret.wav",
+            "Sa Bom Nim E Kyung Yet": "Sa_Bom_Nim_Kay_Kyung_Ret.wav",
+            "Sun Beh Nim E Kyung Yet": "Sun_Beh_Nim_Kay_Kyung_Ret.wav",
+            "Kyung Ret": "Kyung_Ret.wav",
+            "Kyo Sa Nim Kay Kyung Ret": "Kyo_Sa_Nim_Kay_Kyung_Ret.wav",
+            "Shim Sa Kwan Nim Kay Kyung Ret": "Shim_Sa_Kwan_Nim_Kay_Kyung_Ret.wav",
+            "Tora": "Tora.wav",
+            "Shi Sun": "Shi_Sun.wav",
+            "E La Sut": "E_La_Sut.wav",
+            "Ku Ryung E Mat Cho So": "Ku_Ryung_E_Mat_Cho_So.wav",
+            "Ku Ryung Up Shi": "Ku_Ryung_Up_Shi.wav",
+            // Directional
+            "Sang Dan": "Sang_Dan.wav",
+            "Choong Dan": "Choong_Dan.wav",
+            "Ha Dan": "Ha_Dan.wav",
+            "O Ring Jok": "O_Ring_Jok.wav",
+            "Wen Jok": "Wen_Jok.wav",
+            "Ahp": "Ahp.wav",
+            "Yup": "Yup.wav",
+            "Dwi": "Dwi.wav",
+            "Hu Jin": "Hu_Jin.wav",
+            "Chun Jin": "Chun_Jin.wav",
+            // Stances
+            "Chungle Yase / Chun Kul Soh Ki": "Chun_Gul_Jaseh.wav",
+            "Hugal Yase / Hu Kul Soh Ki": "Hu_Gul_Jaseh.wav",
+            "Keema Yase / Kee Mah Soh Ki": "Kee_Ma_Jaseh.wav",
+            "Sakorip Yase": "Sa_Ko_Rip_Jaseh.wav",
+            "Jhoon Bee Jaseh": "Jhoon%20Bee%20Jaseh.wav",
+            "Kyo Cha Rip Jaseh": "Kyo_Cha_Rip_Jaseh.wav",
+            "Deh Ryun Jaseh": "Deh_Ryun_Jaseh.wav",
+            "Bal Cha Ki Jhoon Bee Jaseh": "Bal_Chagi_Jhoon_Bee_Jaseh.wav",
+            // Hand Techniques
+            "Ha Dan Mahk Kee": "Ha_Dan_Mahk_Kee.wav",
+            "Choong Dan Kong Kyuk": "Choong_Dan_Kong_Kyuck.wav",
+            "Sang Dan Kong Kyuk": "Sang_Dan_Kong_Kyuck.wav",
+            "Sang Dan Mahk Kee": "Sang_Dan_Mahk_Kee.wav",
+            "Ahneso Pahku Ro Mahk Kee": "Ahneso_Pahkuro_Mahk_Kee.wav",
+            "Pahkeso Ahnu Ro Mahk Kee": "Pahkeso_Ahnuro_Mahk_Kee.wav",
+            "Ssang Soo Mahk Kee": "Chun_Gul_Ssang_Soo_Mahk_Kee.wav",
+            "Sang Soo Ha Dan Mahk Kee": "Ssang_Soo_Han_Dan_Mahk_Kee.wav",
+            "Yup Mahk Kee": "Hu_Gul_Ahneso_Pahkuro_Mahk_Kee.wav",
+            "Kwan Soo Kong Kyuk": "Kwan_Soo_Kong_Kyuck.wav",
+            "E Jee Kwan Soo Kong Kyuk": "E_Ji_Kwon_Soo.wav",
+            "Yuk Soo Do Kong Kyuk": "Yuk_Soo_Do_Kong_Kyuck.wav",
+            "Wheng Jin Kong Kyuk": "When_Jin_Kong_Kyuck.wav",
+            "Choong Dan Soo Do Mahk Kee": "Choong_Dan_Soo_Do_Mahk_Kee.wav",
+            "Ssang Soo Sang Dan Mahk Kee": "Ssang_Soo_Sang_Dan_Mahk_Kee.wav",
+            "Hu Gul Ha Dan Mahk Kee": "Hu_Gul_Ha_Dan_Mahk_Kee.wav",
+            "Hu Gul Sang Dan Mahk Kee": "Hu_Gul_Sang_Dan_Mahk_Kee.wav",
+            "Hu Gul Ssang Soo Choong Dan Mahk Kee": "Hu_Gul_Ssang_Soo_Choong_Dan_Mahk_Kee.wav",
+            "Hu Gul Ssang Soo Sang Dan Mahk Kee": "Hu_Gul_Ssang_Soo_Sang_Dan_Mahk_Kee.wav",
+            "Hu Gul Ha Dan Soo Do Mahk Kee": "Hu_Gul_Ha_Dan_Soo_Do_Mahk_Kee.wav",
+            "Hu Gul Choong Dan Soo Do Mahk Kee": "Hu_Gul_Choong_Dan_Soo_Do_Mahk_Kee.wav",
+            "Hu Gul Sang Dan Soo Do Mahk Kee": "Hu_Gul_Sang_Dan_Soo_Do_Mahk_Kee.wav",
+            "Jung Kwon Kong Kyuck": "Jung_Kwon_Kong_Kyuck.wav",
+            "Soo Do Kong Kyuck": "Soo_Do_Kong_Kyuck.wav",
+            "Cap Kwon Kong Kyuck": "Cap_Kwon_Kong_Kyuck.wav",
+            "Jip Kye Son": "Jip_Kye_Son.wav",
+            "Pahl Koop Kong Kyuck": "Pahl_Koop_Kong_Kyuck.wav",
+            "Jang Kwon Kong Kyuck": "Jang_Kwon_Kong_Kyuck.wav",
+            "Kwon Do Kong Kyuck": "Kwon_Do_Kong_Kyuck.wav",
+            "Il Ji Kwon Soo": "Il_Ji_Kwan_Soo.wav",
+            "Il Ji Kwon": "Il_Ji_Kwon.wav",
+            "Sohn Mok Deung Kong Kyuck": "Sohn_Mok_Deung_Kong_Kyuck.wav",
+            "Yoo Kwon Kong Kyuck": "Yoo_Kwon_Kong_Kyuck.wav",
+            // Leg Techniques
+            "Ahp Podo Oll Ri Gi": "Ahp_Podo_Oll_Ri_Gi.wav",
+            "Ahp Cha Gi": "Ahp_Cha_Gi.wav",
+            "Yup Podo Cha Gi / Yup Cha Gi": "Yup_Cha_Gi.wav",
+            "Dull Ryo Cha Gi": "Dull_Ryo_Cha_Gi.wav",
+            "Dwi Cha Gi": "Dwi_Cha_Gi.wav",
+            "Pahkeso Ahnero Cha Gi": "Pahkeso_Ahnuro_Cha_Gi.wav",
+            "Ahneso Pahkuro Cha Gi": "Ahneso_Pahkuro_Cha_Gi.wav",
+            "Yup Hu Ri Gi": "Yup_Hu_Ri_Gi.wav",
+            "Moo Roop Cha Gi": "Moo_Roop_Cha_Gi.wav",
+            "Dwi Ahneso Pahkuro Cha Gi": "Dwi_Ahneso_Pahkuro_Cha_Gi.wav",
+            "Dwi Yup Hu Ri Gi": "Dwi_Yup_Hu_Ri_Gi.wav",
+            "Peet Cha Gi": "Peet_Cha_Gi.wav",
+            // Anatomy
+            "Dan Jun": "Dan_Jun.wav",
+            "Pal": "Pahl.wav",
+            "Pal Coop": "Pahl_Koop.wav",
+            "Bahl": "Bal.wav",
+            "Ko Whan": "Ko_Whan.wav",
+            "Twi Kumchi": "Bal_Dwee_Koom_Chi.wav",
+            "Mu Rup": "Moo_Roop.wav",
+            "Mok": "Mok.wav",
+            "In Choong": "In_Choong.wav",
+            "Myung Chi": "Myung_Chi.wav",
+            "Hurri": "Hu_Ri.wav",
+            "Tuk": "Tuk.wav",
+            "Eema": "Eema.wav",
+            "Da Ri": "Da_Ri.wav",
+            "Bal Deung": "Bal_Deung.wav",
+            "Pal Mok": "Pahl_Mok.wav",
+            "Chu Mok": "Chu_Mok.wav",
+            // Weapons/Striking — mapped to attack-form audio (same root word)
+            "Chung Kwon": "Jung_Kwon_Kong_Kyuck.wav",
+            "Kap Kwon": "Cap_Kwon_Kong_Kyuck.wav",
+            "Jang Kwon": "Jang_Kwon_Kong_Kyuck.wav",
+            "Kwan Soo": "Kwan_Soo_Kong_Kyuck.wav",
+            "Yuk Soo Do": "Yuk_Soo_Do_Kong_Kyuck.wav",
+            // Commands — partial matches
+            "Dwee Ro Tora": "Tora.wav",
+            // Leg Techniques — full-term audio used for prefix entry
+            "E Dan": "E-Dan_Cha_Gi.wav",
+        };
+
+        function buildTermRow(term) {
+            let badgeCol = "bg-slate-200 text-slate-700";
+            if (term.category === "Commands") badgeCol = "bg-red-100 text-red-800";
+            if (term.category === "Hand Techniques" || term.category === "Leg Techniques") badgeCol = "bg-amber-100 text-amber-800";
+            if (term.category === "Stances") badgeCol = "bg-blue-100 text-blue-800";
+            if (term.category === "Anatomy") badgeCol = "bg-emerald-100 text-emerald-800";
+            const audioFile = audioMap[term.korean];
+            const audioBtn = audioFile
+                ? `<button onclick="new Audio('${audioBase}${audioFile}').play()" class="ml-2 text-base leading-none hover:opacity-70 focus:outline-none align-middle" title="Play pronunciation" aria-label="Play pronunciation of ${term.korean}">🔊</button>`
+                : '';
+            return `<tr>
+                <td class="font-bold text-blue-900">${term.korean}${audioBtn}</td>
+                <td>${term.english}</td>
+                <td><span class="px-2 py-1 ${badgeCol} rounded text-xs font-semibold uppercase tracking-wider">${term.category}</span></td>
+            </tr>`;
+        }
+
+        function renderTerms(terms) {
+            document.getElementById('termTableBody').innerHTML = terms.map(buildTermRow).join('');
+        }
+
+        function populateTerms() {
+            renderTerms([...dictionary].sort((a, b) => a.english.localeCompare(b.english)));
+        }
+
+        function filterTerms() {
+            const searchText = document.getElementById('termSearch').value.toLowerCase();
+            const categoryText = document.getElementById('termCategory').value;
+            renderTerms(dictionary.filter(term => {
+                const matchText = term.korean.toLowerCase().includes(searchText) || term.english.toLowerCase().includes(searchText);
+                const matchCat = categoryText === 'all' || term.category === categoryText;
+                return matchText && matchCat;
+            }));
+        }
+
+        // --- FORMS --- //
+
+        function populateForms() {
+            document.getElementById('formsGrid').innerHTML = hyungList.map(form => {
+                const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(form.search)}`;
+                return `
+                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow bg-white">
+                        <div class="h-3 w-full ${form.color}"></div>
+                        <div class="p-5 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-900 mb-1">${form.name}</h4>
+                                <div class="flex justify-between items-center mb-4">
+                                    <p class="text-xs text-slate-500 font-semibold uppercase tracking-wide">${form.level}</p>
+                                    <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-600">${form.count} moves</span>
+                                </div>
+                            </div>
+                            <a href="${ytUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors group text-sm">
+                                <span class="mr-2 group-hover:scale-110 transition-transform">&#x25B6;</span> Watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- CANVAS --- //
+
+        function setupCanvas(id) {
+            const canvas = document.getElementById(id);
+            if (!canvas) return null;
+            // Logical coordinate space — all drawing functions use 300x250
+            const CW = 300, CH = 250;
+            const displayW = canvas.clientWidth || CW;
+            const displayH = Math.round(displayW * (5 / 6));
+            canvas.width = displayW;
+            canvas.height = displayH;
+            const ctx = canvas.getContext('2d');
+            // Scale so pixel coords always map to 300x250 logical space
+            ctx.scale(displayW / CW, displayH / CH);
+            ctx.clearRect(0, 0, CW, CH);
+
+            ctx.strokeStyle = '#f8fafc';
+            ctx.lineWidth = 2;
+            for (let i = 0; i <= CW; i += 25) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, CH); ctx.stroke(); }
+            for (let j = 0; j <= CH; j += 25) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(CW, j); ctx.stroke(); }
+
+            ctx.beginPath();
+            ctx.moveTo(20, 220);
+            ctx.lineTo(280, 220);
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.ellipse(150, 220, 90, 8, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.05)';
+            ctx.fill();
+
+            return { ctx, w: CW, h: CH };
+        }
+
+        function drawAnnotation(ctx, text, x, y, align = 'center') {
+            ctx.font = 'bold 11px Inter, sans-serif';
+            ctx.textAlign = align;
+            const metrics = ctx.measureText(text);
+            const w = metrics.width + 16;
+            const h = 22;
+            const bgX = align === 'center' ? x - w / 2 : (align === 'left' ? x : x - w);
+            const bgY = y - 15;
+
+            ctx.shadowColor = 'transparent';
+            ctx.fillStyle = '#f1f5f9';
+            ctx.beginPath();
+            ctx.roundRect(bgX, bgY, w, h, 6);
+            ctx.fill();
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillText(text, x, y);
+        }
+
+        function drawAdvancedFigure(ctx, head, spineTop, spineBottom, armBack, armFront, legBack, legFront) {
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            const darkColor = '#0f172a';
+            const midColor = '#1e293b';
+            const lightColor = '#64748b';
+            const gold = '#f59e0b';
+
+            ctx.shadowColor = 'rgba(15, 23, 42, 0.25)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 3;
+            ctx.shadowOffsetY = 5;
+
+            ctx.strokeStyle = lightColor;
+            ctx.fillStyle = lightColor;
+
+            ctx.beginPath();
+            ctx.moveTo(armBack.sx, armBack.sy);
+            if (armBack.jx) ctx.lineTo(armBack.jx, armBack.jy);
+            ctx.lineTo(armBack.ex, armBack.ey);
+            ctx.lineWidth = 11;
+            ctx.stroke();
+            ctx.beginPath(); ctx.arc(armBack.ex, armBack.ey, 6, 0, Math.PI * 2); ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(spineBottom.x, spineBottom.y);
+            if (legBack.jx) ctx.lineTo(legBack.jx, legBack.jy);
+            ctx.lineTo(legBack.ex, legBack.ey);
+            ctx.lineWidth = 13;
+            ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(legBack.ex, legBack.ey); ctx.lineTo(legBack.ex + 10, legBack.ey); ctx.lineWidth = 9; ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(spineTop.x, spineTop.y);
+            ctx.lineTo(spineBottom.x, spineBottom.y);
+            ctx.strokeStyle = darkColor;
+            ctx.lineWidth = 28;
+            ctx.stroke();
+
+            ctx.shadowColor = 'transparent';
+            ctx.beginPath();
+            ctx.moveTo(spineTop.x - 8, spineTop.y - 5);
+            ctx.lineTo(spineTop.x, spineTop.y + 12);
+            ctx.lineTo(spineTop.x + 8, spineTop.y - 5);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(spineBottom.x - 14, spineBottom.y - 2);
+            ctx.lineTo(spineBottom.x + 14, spineBottom.y + 2);
+            ctx.strokeStyle = gold;
+            ctx.lineWidth = 7;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(spineBottom.x + 10, spineBottom.y);
+            ctx.lineTo(spineBottom.x + 16, spineBottom.y + 18);
+            ctx.moveTo(spineBottom.x + 6, spineBottom.y + 1);
+            ctx.lineTo(spineBottom.x + 10, spineBottom.y + 20);
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.shadowColor = 'rgba(15, 23, 42, 0.25)';
+            ctx.strokeStyle = midColor;
+            ctx.fillStyle = midColor;
+
+            ctx.beginPath();
+            ctx.moveTo(spineBottom.x, spineBottom.y);
+            if (legFront.jx) ctx.lineTo(legFront.jx, legFront.jy);
+            ctx.lineTo(legFront.ex, legFront.ey);
+            ctx.lineWidth = 14;
+            ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(legFront.ex, legFront.ey); ctx.lineTo(legFront.ex + 12, legFront.ey); ctx.lineWidth = 10; ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(armFront.sx, armFront.sy);
+            if (armFront.jx) ctx.lineTo(armFront.jx, armFront.jy);
+            ctx.lineTo(armFront.ex, armFront.ey);
+            ctx.lineWidth = 12;
+            ctx.stroke();
+            ctx.beginPath(); ctx.arc(armFront.ex, armFront.ey, 7, 0, Math.PI * 2); ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(head.x, head.y, 18, 0, Math.PI * 2);
+            ctx.fillStyle = darkColor;
+            ctx.fill();
+
+            ctx.shadowColor = 'transparent';
+            ctx.beginPath();
+            ctx.arc(head.x + 8, head.y - 3, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = '#38bdf8';
+            ctx.fill();
+        }
+
+        function drawActionLines(ctx, startX, startY, endX, endY) {
+            ctx.shadowColor = 'transparent';
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 6]);
+            ctx.beginPath();
+
+            const dx = endX - startX;
+            const dy = endY - startY;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            const nx = -dy / length;
+            const ny = dx / length;
+            const offset = 12;
+
+            ctx.moveTo(startX + nx * offset, startY + ny * offset);
+            ctx.lineTo(endX - dx * 0.2 + nx * offset, endY - dy * 0.2 + ny * offset);
+            ctx.moveTo(startX - nx * offset, startY - ny * offset);
+            ctx.lineTo(endX - dx * 0.2 - nx * offset, endY - dy * 0.2 - ny * offset);
+
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawAllTechniques() {
+            drawFrontStance('canvas-front-stance');
+            drawBackStance('canvas-back-stance');
+            drawHorseStance('canvas-horse-stance');
+            drawCenterPunch('canvas-center-punch');
+            drawHighPunch('canvas-high-punch');
+        }
+
+        function drawFrontStance(id) {
+            const setup = setupCanvas(id);
+            if (!setup) return; const { ctx } = setup;
+            drawAdvancedFigure(ctx,
+                { x: 110, y: 50 }, { x: 110, y: 75 }, { x: 110, y: 135 },
+                { sx: 110, sy: 80, jx: 85, jy: 100, ex: 95, ey: 125 },
+                { sx: 110, sy: 80, jx: 150, jy: 85, ex: 190, ey: 105 },
+                { jx: 65, jy: 175, ex: 50, ey: 218 },
+                { jx: 160, jy: 175, ex: 160, ey: 218 }
+            );
+            drawAnnotation(ctx, '60% Front', 175, 205, 'left');
+            drawAnnotation(ctx, '40% Back', 45, 205, 'right');
+        }
+
+        function drawBackStance(id) {
+            const setup = setupCanvas(id);
+            if (!setup) return; const { ctx } = setup;
+            drawAdvancedFigure(ctx,
+                { x: 120, y: 65 }, { x: 120, y: 85 }, { x: 100, y: 145 },
+                { sx: 115, sy: 90, jx: 130, jy: 105, ex: 150, ey: 95 },
+                { sx: 115, sy: 90, jx: 140, jy: 75, ex: 180, ey: 85 },
+                { jx: 80, jy: 185, ex: 80, ey: 218 },
+                { jx: 160, jy: 195, ex: 190, ey: 218 }
+            );
+            drawAnnotation(ctx, '70% Back', 70, 205, 'right');
+            drawAnnotation(ctx, '30% Front', 200, 205, 'left');
+        }
+
+        function drawHorseStance(id) {
+            const setup = setupCanvas(id);
+            if (!setup) return; const { ctx } = setup;
+            drawAdvancedFigure(ctx,
+                { x: 150, y: 75 }, { x: 150, y: 95 }, { x: 150, y: 155 },
+                { sx: 150, sy: 100, jx: 120, jy: 125, ex: 140, ey: 145 },
+                { sx: 150, sy: 100, jx: 180, jy: 125, ex: 160, ey: 145 },
+                { jx: 100, jy: 185, ex: 80, ey: 218 },
+                { jx: 200, jy: 185, ex: 220, ey: 218 }
+            );
+            drawAnnotation(ctx, '50% / 50%', 150, 205, 'center');
+        }
+
+        function drawCenterPunch(id) {
+            const setup = setupCanvas(id);
+            if (!setup) return; const { ctx } = setup;
+
+            drawActionLines(ctx, 110, 80, 230, 95);
+            drawAdvancedFigure(ctx,
+                { x: 100, y: 55 }, { x: 100, y: 75 }, { x: 100, y: 135 },
+                { sx: 100, sy: 80, jx: 80, jy: 100, ex: 90, ey: 125 },
+                { sx: 100, sy: 80, jx: null, jy: null, ex: 230, ey: 95 },
+                { jx: 55, jy: 175, ex: 45, ey: 218 },
+                { jx: 155, jy: 175, ex: 155, ey: 218 }
+            );
+
+            ctx.shadowColor = 'transparent';
+            ctx.beginPath(); ctx.arc(245, 95, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)'; ctx.lineWidth = 3; ctx.stroke();
+            ctx.beginPath(); ctx.arc(245, 95, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#ef4444'; ctx.fill();
+        }
+
+        function drawHighPunch(id) {
+            const setup = setupCanvas(id);
+            if (!setup) return; const { ctx } = setup;
+
+            drawActionLines(ctx, 110, 80, 215, 55);
+            drawAdvancedFigure(ctx,
+                { x: 100, y: 55 }, { x: 100, y: 75 }, { x: 100, y: 135 },
+                { sx: 100, sy: 80, jx: 80, jy: 100, ex: 90, ey: 125 },
+                { sx: 100, sy: 80, jx: null, jy: null, ex: 215, ey: 55 },
+                { jx: 55, jy: 175, ex: 45, ey: 218 },
+                { jx: 155, jy: 175, ex: 155, ey: 218 }
+            );
+
+            ctx.shadowColor = 'transparent';
+            ctx.beginPath(); ctx.arc(230, 55, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)'; ctx.lineWidth = 3; ctx.stroke();
+            ctx.beginPath(); ctx.arc(230, 55, 4, 0, Math.PI * 2);
+            ctx.fillStyle = '#ef4444'; ctx.fill();
+        }
+
+    </script>
+</body>
+</html>
