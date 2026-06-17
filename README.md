@@ -1,26 +1,29 @@
 # Traditional Tang Soo Do — Student Manual
 
 A complete, single-page reference manual for **Traditional Tang Soo Do Moo Duk Kwan**
-students, covering the art's history, curriculum, terminology, techniques, sparring, and
-forms.
+students, covering the art's history, curriculum, terminology, techniques, sparring,
+forms, and bunkai.
 
 🥋 **Live site:** https://alexcch-byte.github.io/TTF/
 
 ## Sections
 
-- **Origins & Philosophy** — history of the art, the Eight Key Concepts, and the Ten
-  Articles of Faith, with a development-balance chart.
+- **Origins & Philosophy** — history of the art, the Eight Key Concepts, the Ten
+  Articles of Faith, notable practitioners, and a development-balance chart.
 - **Curriculum & Rank** — belt progression (Gup to Dan), forms rotation, breaking
   requirements, and flying-kick syllabus.
 - **Terminology Dictionary** — searchable Korean ↔ English glossary across stances,
-  hand/leg techniques, commands, anatomy, and more.
-- **Techniques & Visuals** — illustrated stances and punches plus kicking and advanced
-  hand/foot combinations.
+  hand/leg techniques, commands, anatomy, and more, with pronunciation audio.
+- **Techniques & Visuals** — illustrated stances and punches, kicking and advanced
+  hand/foot combinations, plus stretching & flexibility for kicks.
 - **Sparring & Self-Defence** — one-step sparring (Il Soo Sik) and Ho Sin Sool
   self-defence grabs by rotation.
 - **Free Sparring & Matches** — free-sparring levels, tournament scoring, rules,
-  equipment, etiquette, and reference match footage.
+  equipment, etiquette, sparring tips, and reference match footage.
 - **Forms (Hyung) Library** — demonstration videos for each required form.
+- **Bunkai (Applications)** — curated videos breaking down the practical applications of
+  the hyung (Pyung Ahn / Pinan, Bassai / Passai, Naihanchi / Tekki).
+- **Britannia Karate** — the host school: location, class schedule, and instructor team.
 
 ## Viewing locally
 
@@ -31,8 +34,9 @@ index.html
 ```
 
 Everything (markup, styles, data, and logic) lives in `index.html`. Styling uses Tailwind
-CSS, charts use Chart.js, and fonts use Inter — all loaded from CDN, so an internet
-connection is required for full rendering.
+CSS (with a midnight-blue / maroon / gold theme set via the Tailwind config), charts use
+Chart.js, and fonts use Inter — all loaded from CDN, so an internet connection is required
+for full rendering.
 
 ## Project structure
 
