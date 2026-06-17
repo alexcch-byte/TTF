@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Traditional Tang Soo Do</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Theme palette: midnight blue (blue), antique gold (amber), maroon (red).
+        // Remaps the Tailwind shades the site already uses so existing classes adopt the theme.
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        blue: {
+                            50: '#E9ECF6', 100: '#C8CFE6', 200: '#AAB4D8',
+                            700: '#22306B', 800: '#182452', 900: '#101A3C', 950: '#0A1029'
+                        },
+                        amber: {
+                            50: '#FBF4E0', 100: '#F3E2B8', 200: '#E7CE8E', 300: '#DBBE6E',
+                            400: '#D2AB48', 500: '#C99A2E', 600: '#AE8222', 700: '#8C6719',
+                            800: '#6E5014', 900: '#56400F'
+                        },
+                        red: {
+                            50: '#F7E9EB', 100: '#ECC9CE', 200: '#DDB0B7',
+                            600: '#7B1E2B', 700: '#631823', 800: '#4F141C'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
@@ -17,8 +42,8 @@
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #1e40af; }
+        ::-webkit-scrollbar-thumb { background: #101A3C; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #182452; }
 
         .chart-container {
             position: relative;
@@ -43,9 +68,9 @@
         }
 
         .nav-active {
-            background-color: #1e3a8a !important;
+            background-color: #7B1E2B !important;
             color: white !important;
-            border-left: 4px solid #f59e0b;
+            border-left: 4px solid #C99A2E;
         }
 
         /* Replaced @apply with plain CSS — @apply is unreliable on CDN Tailwind */
@@ -70,7 +95,7 @@
 <body class="flex flex-col md:flex-row h-screen overflow-hidden bg-slate-50 relative">
 
     <!-- Mobile Header -->
-    <header class="md:hidden bg-slate-900 text-white flex justify-between items-center p-4 shadow-md z-40 shrink-0">
+    <header class="md:hidden bg-blue-900 text-white flex justify-between items-center p-4 shadow-md z-40 shrink-0">
         <div class="flex items-center gap-3">
             <img src="a6dd21_71ed77483b6f4be7b7faf1ac57663145.gif" alt="Logo" width="40" height="40" class="w-10 h-10 shrink-0 drop-shadow-md">
             <h1 class="text-base font-bold uppercase tracking-wider">Traditional Tang Soo Do</h1>
@@ -83,7 +108,7 @@
     <!-- Mobile Overlay -->
     <div id="mobile-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
 
-    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-slate-900 text-slate-300 flex flex-col h-full shadow-2xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex-shrink-0">
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-blue-900 text-slate-300 flex flex-col h-full shadow-2xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex-shrink-0">
         <div class="p-6 text-center border-b border-slate-700 relative">
             <button id="btn-mobile-close" class="md:hidden absolute top-4 right-4 text-slate-400 hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -95,43 +120,43 @@
         <nav class="flex-1 py-4 overflow-y-auto">
             <ul class="space-y-1">
                 <li>
-                    <button data-nav="origins" id="nav-origins" class="nav-active w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="origins" id="nav-origins" class="nav-active w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Origins & Philosophy</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
                 </li>
                 <li>
-                    <button data-nav="curriculum" id="nav-curriculum" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="curriculum" id="nav-curriculum" class="w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Curriculum & Rank</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
                 </li>
                 <li>
-                    <button data-nav="terminology" id="nav-terminology" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="terminology" id="nav-terminology" class="w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Terminology Dictionary</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
                 </li>
                 <li>
-                    <button data-nav="techniques" id="nav-techniques" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="techniques" id="nav-techniques" class="w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Techniques & Visuals</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
                 </li>
                 <li>
-                    <button data-nav="sparring" id="nav-sparring" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="sparring" id="nav-sparring" class="w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Sparring & Self-Defence</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
                 </li>
                 <li>
-                    <button data-nav="freesparring" id="nav-freesparring" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="freesparring" id="nav-freesparring" class="w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Free Sparring & Matches</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
                 </li>
                 <li>
-                    <button data-nav="forms" id="nav-forms" class="w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors flex justify-between items-center">
+                    <button data-nav="forms" id="nav-forms" class="w-full text-left px-6 py-3 hover:bg-blue-800 hover:text-white transition-colors flex justify-between items-center">
                         <span>Forms (Hyung) Videos</span>
                         <span class="text-xs">&#x25B6;</span>
                     </button>
@@ -1156,7 +1181,7 @@
             { name: "Pyung Ahn Cho Dan", level: "Rotation 2 — Green Belt", count: "22", search: "Success Martial Arts Pyung Ahn Cho Dan Tang Soo Do", color: "bg-green-100 border-green-500 text-green-900" },
             { name: "Pyung Ahn Sa Dan", level: "Rotation 3 — Green Belt", count: "29", search: "Success Martial Arts Pyung Ahn Sa Dan Tang Soo Do", color: "bg-green-100 border-green-500 text-green-900" },
             { name: "Pyung Ahn Ee Dan", level: "Rotation 4 — Green Belt", count: "29", search: "Success Martial Arts Pyung Ahn Ee Dan Tang Soo Do", color: "bg-green-100 border-green-500 text-green-900" },
-            { name: "Pyung Ahn Sam Dan", level: "Rotation 5 — Red Belt", count: "27", search: "Success Martial Arts Pyung Ahn Sam Dan Tang Soo Do", color: "bg-red-600 border-red-700 text-white" },
+            { name: "Pyung Ahn Sam Dan", level: "Rotation 5 — Red Belt", count: "27", search: "Success Martial Arts Pyung Ahn Sam Dan Tang Soo Do", color: "bg-[#dc2626] border-[#b91c1c] text-white" },
             { name: "Bassai So", level: "3rd–1st Gup", count: "33", search: "Success Martial Arts Bassai So Tang Soo Do", color: "bg-slate-900 border-slate-700 text-white" },
             { name: "Bassai Dae", level: "2nd–1st Gup", count: "52", search: "Success Martial Arts Bassai Dae Tang Soo Do", color: "bg-slate-900 border-slate-700 text-white" },
             { name: "Naihanchi Hyung Cho Dan", level: "Advanced", count: "33", search: "Success Martial Arts Naihanchi Cho Dan Tang Soo Do", color: "bg-slate-900 border-slate-700 text-white" },
@@ -1263,10 +1288,10 @@
                         label: 'Development Focus',
                         data: [90, 85, 95, 80, 85, 100],
                         backgroundColor: [
-                            'rgba(30, 58, 138, 0.7)',
-                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(16, 26, 60, 0.75)',
+                            'rgba(201, 154, 46, 0.8)',
                             'rgba(15, 23, 42, 0.7)',
-                            'rgba(220, 38, 38, 0.7)',
+                            'rgba(123, 30, 43, 0.8)',
                             'rgba(16, 185, 129, 0.7)',
                             'rgba(56, 189, 248, 0.7)'
                         ],
