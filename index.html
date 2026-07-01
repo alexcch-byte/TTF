@@ -3,12 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A complete, single-page student manual for Traditional Tang Soo Do Moo Duk Kwan students, covering history, curriculum, terminology, techniques, forms, bunkai, and sparring.">
     <title>Traditional Tang Soo Do</title>
+    <script>
+        // Inline dark mode check to prevent screen flash
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Theme palette: midnight blue (blue), antique gold (amber), maroon (red).
         // Remaps the Tailwind shades the site already uses so existing classes adopt the theme.
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -36,8 +46,9 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
+            background-color: #FAF9F6;
+            color: #1e293b;
+            transition: background-color 200ms, color 200ms;
         }
 
         ::-webkit-scrollbar { width: 8px; }
@@ -56,7 +67,7 @@
         }
 
         .canvas-technique {
-            background-color: #ffffff;
+            background-color: transparent;
             border: 2px solid #e2e8f0;
             border-radius: 0.5rem;
             width: 100%;
@@ -65,6 +76,7 @@
             aspect-ratio: 6/5;
             display: block;
             margin: 0 auto;
+            transition: border-color 200ms;
         }
 
         .nav-active {
@@ -80,29 +92,160 @@
             font-weight: 600;
             color: #1e293b;
             border-bottom: 1px solid #e2e8f0;
+            transition: background-color 200ms, color 200ms, border-color 200ms;
         }
         .manual-table td {
             padding: 0.75rem 1rem;
             color: #334155;
             border-bottom: 1px solid #f1f5f9;
+            transition: background-color 200ms, color 200ms, border-color 200ms;
         }
         .manual-table tr:hover td {
             background-color: #f8fafc;
             transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* --- Dark Mode Overrides --- */
+        .dark body {
+            background-color: #070b1a;
+            color: #f1f5f9;
+        }
+        .dark main {
+            background-color: #070b1a !important;
+        }
+        .dark aside {
+            background-color: #0a1029 !important;
+            border-right: 1px solid #101a3c;
+        }
+        .dark header {
+            background-color: #0a1029 !important;
+        }
+        .dark .bg-white {
+            background-color: #101a3c !important;
+            border-color: #182452 !important;
+        }
+        .dark .bg-slate-50 {
+            background-color: #0d1530 !important;
+            border-color: #182452 !important;
+        }
+        .dark .bg-slate-100 {
+            background-color: #182452 !important;
+            border-color: #22306B !important;
+        }
+        .dark .border-slate-100,
+        .dark .border-slate-200,
+        .dark .border-stone-200 {
+            border-color: #182452 !important;
+        }
+        .dark .text-slate-900 {
+            color: #f8fafc !important;
+        }
+        .dark .text-slate-800 {
+            color: #f1f5f9 !important;
+        }
+        .dark .text-slate-700 {
+            color: #cbd5e1 !important;
+        }
+        .dark .text-slate-600 {
+            color: #94a3b8 !important;
+        }
+        .dark .text-slate-500 {
+            color: #64748b !important;
+        }
+        .dark .text-blue-900 {
+            color: #C2D1F0 !important;
+        }
+        .dark .border-blue-900 {
+            border-color: #C99A2E !important;
+        }
+        .dark .manual-table th {
+            background-color: #182452 !important;
+            color: #f8fafc !important;
+            border-bottom: 1px solid #22306B !important;
+        }
+        .dark .manual-table td {
+            color: #cbd5e1 !important;
+            border-bottom: 1px solid #182452 !important;
+        }
+        .dark .manual-table tr:hover td {
+            background-color: rgba(24, 36, 82, 0.4) !important;
+        }
+        .dark .bg-blue-50 {
+            background-color: #101a3c !important;
+            border-color: #22306B !important;
+        }
+        .dark .bg-amber-50 {
+            background-color: rgba(201, 154, 46, 0.1) !important;
+            border-color: rgba(201, 154, 46, 0.3) !important;
+            color: #f3e2b8 !important;
+        }
+        .dark .text-amber-900 {
+            color: #f3e2b8 !important;
+        }
+        .dark .text-amber-800 {
+            color: #e7ce8e !important;
+        }
+        .dark .text-amber-600 {
+            color: #e7ce8e !important;
+        }
+        .dark .border-amber-300 {
+            border-color: rgba(201, 154, 46, 0.3) !important;
+        }
+        .dark .bg-red-50 {
+            background-color: rgba(123, 30, 43, 0.1) !important;
+            border-color: rgba(123, 30, 43, 0.3) !important;
+            color: #fecaca !important;
+        }
+        .dark .text-red-800 {
+            color: #fecaca !important;
+        }
+        .dark .border-red-200 {
+            border-color: rgba(123, 30, 43, 0.3) !important;
+        }
+        .dark .bg-green-50 {
+            background-color: rgba(16, 185, 129, 0.1) !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+            color: #d1fae5 !important;
+        }
+        .dark .text-green-700 {
+            color: #34d399 !important;
+        }
+        .dark .border-green-200 {
+            border-color: rgba(16, 185, 129, 0.3) !important;
+        }
+        .dark .canvas-technique {
+            border-color: #182452;
+        }
+        .dark ::-webkit-scrollbar-track {
+            background: #070b1a;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #22306B;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #C99A2E;
+        }
     </style>
 </head>
-<body class="flex flex-col md:flex-row h-screen overflow-hidden bg-slate-50 relative">
+<body class="flex flex-col md:flex-row h-screen overflow-hidden bg-[#FAF9F6] relative">
 
     <!-- Mobile Header -->
     <header class="md:hidden bg-blue-900 text-white flex justify-between items-center p-4 shadow-md z-40 shrink-0">
         <div class="flex items-center gap-3">
             <img src="a6dd21_71ed77483b6f4be7b7faf1ac57663145.gif" alt="Logo" width="40" height="40" class="w-10 h-10 shrink-0 drop-shadow-md">
-            <h1 class="text-base font-bold uppercase tracking-wider">Traditional Tang Soo Do</h1>
+            <span class="text-base font-bold uppercase tracking-wider">Traditional Tang Soo Do</span>
         </div>
-        <button id="btn-mobile-open" class="text-slate-300 hover:text-white focus:outline-none p-1">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
+        <div class="flex items-center gap-3">
+            <button id="btn-theme-toggle-mobile" class="text-slate-300 hover:text-white p-2 rounded-full hover:bg-blue-800 transition-colors focus:outline-none" title="Toggle Theme" aria-label="Toggle theme">
+                <!-- Moon icon (visible in light mode) -->
+                <svg id="theme-icon-moon-mobile" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <!-- Sun icon (visible in dark mode) -->
+                <svg id="theme-icon-sun-mobile" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" clip-rule="evenodd"></path></svg>
+            </button>
+            <button id="btn-mobile-open" class="text-slate-300 hover:text-white focus:outline-none p-1">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
     </header>
 
     <!-- Mobile Overlay -->
@@ -110,7 +253,13 @@
 
     <aside id="sidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-blue-900 text-slate-300 flex flex-col h-full shadow-2xl z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 flex-shrink-0">
         <div class="p-6 text-center border-b border-slate-700 relative">
-            <button id="btn-mobile-close" class="md:hidden absolute top-4 right-4 text-slate-400 hover:text-white">
+            <button id="btn-theme-toggle" class="absolute top-4 left-4 text-slate-400 hover:text-white p-2 rounded-full hover:bg-blue-800 transition-colors focus:outline-none" title="Toggle Theme" aria-label="Toggle theme">
+                <!-- Moon icon (visible in light mode) -->
+                <svg id="theme-icon-moon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <!-- Sun icon (visible in dark mode) -->
+                <svg id="theme-icon-sun" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" clip-rule="evenodd"></path></svg>
+            </button>
+            <button id="btn-mobile-close" class="md:hidden absolute top-4 right-4 text-slate-400 hover:text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <img src="a6dd21_71ed77483b6f4be7b7faf1ac57663145.gif" alt="Logo" width="80" height="80" class="w-20 h-20 mx-auto mb-3 shrink-0 drop-shadow-lg">
@@ -181,7 +330,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 w-full bg-slate-50 h-full overflow-y-auto relative scroll-smooth">
+    <main class="flex-1 w-full bg-[#FAF9F6] h-full overflow-y-auto relative scroll-smooth transition-colors duration-200">
 
         <section id="sec-origins" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto block">
             <div class="mb-10">
@@ -353,12 +502,12 @@
                     <h3 class="bg-slate-100 px-6 py-4 font-bold text-blue-900 border-b border-slate-200">Forms Rotation Curriculum</h3>
                     <div class="p-6">
                         <ul class="space-y-4 text-sm">
-                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">10th-9th Gup</span> <span>Gi Cho Hyung Il Bu (to 1st Ki Hap)</span></li>
-                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">9th-8th Gup</span> <span>Gi Cho Hyung Il Bu + E Bu</span></li>
+                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">10th-9th Gup</span> <span>Kee Cho Hyung Il Bu (to 1st Ki Hap)</span></li>
+                            <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">9th-8th Gup</span> <span>Kee Cho Hyung Il Bu + Ee Bu</span></li>
                             <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 1</span> <span>Pyung Ahn Oh Dan</span></li>
                             <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 2</span> <span>Pyung Ahn Cho Dan</span></li>
                             <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 3</span> <span>Pyung Ahn Sa Dan</span></li>
-                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 4</span> <span>Pyung Ahn E Dan</span></li>
+                            <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 4</span> <span>Pyung Ahn Ee Dan</span></li>
                             <li class="flex justify-between border-b pb-2 text-blue-900"><span class="font-bold">Rotation 5</span> <span>Pyung Ahn Sam Dan</span></li>
                             <li class="flex justify-between border-b pb-2"><span class="font-semibold text-slate-800">3rd-2nd Gup</span> <span>Pyung Ahn Oh Dan + Bassai So</span></li>
                             <li class="flex justify-between"><span class="font-semibold text-slate-800">2nd-1st Gup</span> <span>Bassai So + Bassai Dae</span></li>
@@ -446,8 +595,8 @@
 
             <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                 <div class="flex flex-col md:flex-row gap-4 mb-6 bg-slate-50 p-4 rounded-lg border border-slate-200">
-                    <input type="text" id="termSearch" placeholder="Search English or Korean (e.g. 'Punch', 'Kong Kyuk')..." class="flex-1 px-4 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 shadow-sm">
-                    <select id="termCategory" class="px-4 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 bg-white shadow-sm font-semibold text-slate-700">
+                    <input type="text" id="termSearch" placeholder="Search English or Korean (e.g. 'Punch', 'Kong Kyuk')..." aria-label="Search English or Korean terminology" class="flex-1 px-4 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 shadow-sm dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100">
+                    <select id="termCategory" aria-label="Filter terminology by category" class="px-4 py-3 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-900 bg-white shadow-sm font-semibold text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-200">
                         <option value="all">All Categories</option>
                         <option value="General">General / People</option>
                         <option value="Commands">Commands</option>
@@ -1030,7 +1179,7 @@
                     <h3 class="text-xl font-bold text-amber-500 mb-4">Visit the Dojang</h3>
                     <p class="text-sm leading-relaxed mb-2">900 47 Ave SW<br>Calgary, AB T2S 3C8<br>Canada</p>
                     <p class="text-sm mb-4">&#x260E; (403) 461-8334</p>
-                    <a href="https://britanniakarate.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors text-sm">
+                    <a href="https://britanniakarate.com/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-amber-500 hover:bg-amber-600 text-blue-950 font-bold py-2 px-4 rounded transition-all transform hover:-translate-y-0.5 shadow-sm hover:shadow-md text-sm">
                         Visit britanniakarate.com
                     </a>
                 </div>
@@ -1126,7 +1275,7 @@
             { korean: "Do Bok", english: "Training uniform", category: "General" },
             { korean: "Dee", english: "Belt", category: "General" },
             { korean: "Hyung", english: "Form (kata)", category: "General" },
-            { korean: "Gi Cho", english: "Basic", category: "General" },
+            { korean: "Kee Cho", english: "Basic", category: "General" },
             { korean: "Dae Ryun", english: "Sparring", category: "General" },
             { korean: "Ki Hap", english: "Shout/focused spirit yell", category: "General" },
             { korean: "Soo Bahk Do", english: "Ancient Korean predecessor art to Tang Soo Do", category: "General" },
@@ -1277,9 +1426,9 @@
             { korean: "In Choong", english: "Philtrum", category: "Anatomy" },
             { korean: "Myung Chi", english: "Solar plexus", category: "Anatomy" },
             { korean: "Sohn", english: "Hand", category: "Anatomy" },
-            { korean: "Sohn Mon", english: "Wrist", category: "Anatomy" },
+            { korean: "Sohn Mok", english: "Wrist", category: "Anatomy" },
             { korean: "Hurri", english: "Waist", category: "Anatomy" },
-            { korean: "Pal Mok", english: "Ankle", category: "Anatomy" },
+            { korean: "Bal Mok", english: "Ankle", category: "Anatomy" },
             { korean: "Bahl Ga Rak", english: "Toes", category: "Anatomy" },
             { korean: "Nun", english: "Eye", category: "Anatomy" },
             { korean: "Kwi", english: "Ear", category: "Anatomy" },
@@ -1338,6 +1487,7 @@
 
         const sections = ['origins', 'curriculum', 'terminology', 'techniques', 'sparring', 'freesparring', 'forms', 'bunkai', 'school'];
         let canvasesDrawn = false;
+        let myChart = null;
 
         // --- UTILITIES --- //
 
@@ -1360,6 +1510,58 @@
             const debouncedFilter = debounce(filterTerms, 200);
             document.getElementById('termSearch').addEventListener('input', debouncedFilter);
             document.getElementById('termCategory').addEventListener('change', filterTerms);
+
+            // --- THEME TOGGLE LOGIC --- //
+            const btnThemeToggle = document.getElementById('btn-theme-toggle');
+            const btnThemeToggleMobile = document.getElementById('btn-theme-toggle-mobile');
+
+            function updateThemeUI() {
+                const isDark = document.documentElement.classList.contains('dark');
+                const moonIcon = document.getElementById('theme-icon-moon');
+                const sunIcon = document.getElementById('theme-icon-sun');
+                const moonIconMobile = document.getElementById('theme-icon-moon-mobile');
+                const sunIconMobile = document.getElementById('theme-icon-sun-mobile');
+
+                if (isDark) {
+                    if (moonIcon) moonIcon.classList.add('hidden');
+                    if (sunIcon) sunIcon.classList.remove('hidden');
+                    if (moonIconMobile) moonIconMobile.classList.add('hidden');
+                    if (sunIconMobile) sunIconMobile.classList.remove('hidden');
+                } else {
+                    if (moonIcon) moonIcon.classList.remove('hidden');
+                    if (sunIcon) sunIcon.classList.add('hidden');
+                    if (moonIconMobile) moonIconMobile.classList.remove('hidden');
+                    if (sunIconMobile) sunIconMobile.classList.add('hidden');
+                }
+            }
+
+            function toggleTheme() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                updateThemeUI();
+                if (canvasesDrawn && !document.getElementById('sec-techniques').classList.contains('hidden')) {
+                    drawAllTechniques();
+                }
+                if (window.myChart) {
+                    renderChart();
+                }
+            }
+
+            if (btnThemeToggle) btnThemeToggle.addEventListener('click', toggleTheme);
+            if (btnThemeToggleMobile) btnThemeToggleMobile.addEventListener('click', toggleTheme);
+            updateThemeUI();
+
+            // --- RESPONSIVE CANVAS REDRAW --- //
+            window.addEventListener('resize', debounce(() => {
+                if (canvasesDrawn && !document.getElementById('sec-techniques').classList.contains('hidden')) {
+                    drawAllTechniques();
+                }
+            }, 150));
 
             populateTerms();
             populateForms();
@@ -1418,7 +1620,15 @@
 
         function renderChart() {
             const ctx = document.getElementById('attributesChart').getContext('2d');
-            new Chart(ctx, {
+            const isDark = document.documentElement.classList.contains('dark');
+            const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(15, 23, 42, 0.05)';
+            const textColor = isDark ? '#f1f5f9' : '#1e293b';
+
+            if (window.myChart) {
+                window.myChart.destroy();
+            }
+
+            window.myChart = new Chart(ctx, {
                 type: 'polarArea',
                 data: {
                     labels: ['Discipline', 'Flexibility', 'Focus', 'Power', 'Speed', 'Respect'],
@@ -1426,21 +1636,36 @@
                         label: 'Development Focus',
                         data: [90, 85, 95, 80, 85, 100],
                         backgroundColor: [
-                            'rgba(16, 26, 60, 0.75)',
-                            'rgba(201, 154, 46, 0.8)',
-                            'rgba(15, 23, 42, 0.7)',
+                            'rgba(16, 26, 60, 0.8)',
+                            'rgba(201, 154, 46, 0.85)',
+                            'rgba(24, 36, 82, 0.85)',
                             'rgba(123, 30, 43, 0.8)',
-                            'rgba(16, 185, 129, 0.7)',
-                            'rgba(56, 189, 248, 0.7)'
+                            'rgba(79, 20, 28, 0.85)',
+                            'rgba(10, 16, 41, 0.9)'
                         ],
-                        borderWidth: 1
+                        borderWidth: 1,
+                        borderColor: isDark ? '#101a3c' : '#ffffff'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0,0,0,0.05)' } } },
-                    plugins: { legend: { position: 'right', labels: { font: { family: 'Inter', size: 11 } } } }
+                    scales: { 
+                        r: { 
+                            ticks: { display: false }, 
+                            grid: { color: gridColor },
+                            angleLines: { color: gridColor }
+                        } 
+                    },
+                    plugins: { 
+                        legend: { 
+                            position: 'right', 
+                            labels: { 
+                                color: textColor,
+                                font: { family: 'Inter', size: 11 } 
+                            } 
+                        } 
+                    }
                 }
             });
         }
@@ -1471,7 +1696,7 @@
             "Ko Dan Ja": "Ko_Dan_Ja.wav",
             "Hu Beh": "Hu_Beh.wav",
             "Sun Beh": "Sun_Beh.wav",
-            "Gi Cho": "Kee_Cho.wav",
+            "Kee Cho": "Kee_Cho.wav",
             "Mahk Kee": "Mahk_Kee.wav",
             "Kong Kyuk": "Kong_Kyuck.wav",
             "Cha Gi": "Chagi.wav",
@@ -1596,7 +1821,7 @@
             "Eema": "Eema.wav",
             "Da Ri": "Da_Ri.wav",
             "Bal Deung": "Bal_Deung.wav",
-            "Pal Mok": "Pahl_Mok.wav",
+            "Bal Mok": "Pahl_Mok.wav",
             "Chu Mok": "Chu_Mok.wav",
             // Weapons/Striking — mapped to attack-form audio (same root word)
             "Chung Kwon": "Jung_Kwon_Kong_Kyuck.wav",
@@ -1610,6 +1835,14 @@
             "E Dan": "E-Dan_Cha_Gi.wav",
         };
 
+        function playAudio(file) {
+            if (!file) return;
+            const audio = new Audio(audioBase + file);
+            audio.play().catch(err => {
+                console.warn("Audio playback failed:", err);
+            });
+        }
+
         function buildTermRow(term) {
             let badgeCol = "bg-slate-200 text-slate-700";
             if (term.category === "Commands") badgeCol = "bg-red-100 text-red-800";
@@ -1618,7 +1851,7 @@
             if (term.category === "Anatomy") badgeCol = "bg-emerald-100 text-emerald-800";
             const audioFile = audioMap[term.korean];
             const audioBtn = audioFile
-                ? `<button onclick="new Audio('${audioBase}${audioFile}').play()" class="ml-2 text-base leading-none hover:opacity-70 focus:outline-none align-middle" title="Play pronunciation" aria-label="Play pronunciation of ${term.korean}">🔊</button>`
+                ? `<button onclick="playAudio('${audioFile}')" class="ml-2 text-base leading-none hover:opacity-70 focus:outline-none align-middle" title="Play pronunciation" aria-label="Play pronunciation of ${term.korean}">🔊</button>`
                 : '';
             return `<tr>
                 <td class="font-bold text-blue-900">${term.korean}${audioBtn}</td>
@@ -1651,7 +1884,7 @@
             document.getElementById('formsGrid').innerHTML = hyungList.map(form => {
                 const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(form.search)}`;
                 return `
-                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow bg-white">
+                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-300 bg-white">
                         <div class="h-3 w-full ${form.color}"></div>
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
@@ -1661,7 +1894,7 @@
                                     <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-600">${form.count} moves</span>
                                 </div>
                             </div>
-                            <a href="${ytUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors group text-sm">
+                            <a href="${ytUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-amber-500 hover:bg-amber-600 text-blue-950 hover:text-black font-bold py-2 px-4 rounded transition-all transform hover:-translate-y-0.5 shadow-sm hover:shadow-md text-center text-sm group">
                                 <span class="mr-2 group-hover:scale-110 transition-transform">&#x25B6;</span> Watch on YouTube
                             </a>
                         </div>
@@ -1676,14 +1909,14 @@
             document.getElementById('matchesGrid').innerHTML = matchList.map(match => {
                 const ytUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(match.search)}`;
                 return `
-                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow bg-white">
+                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-300 bg-white">
                         <div class="h-3 w-full ${match.color}"></div>
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
                                 <h4 class="text-lg font-bold text-slate-900 mb-1">${match.title}</h4>
                                 <p class="text-xs text-slate-500 font-semibold uppercase tracking-wide mb-4">${match.level}</p>
                             </div>
-                            <a href="${ytUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors group text-sm">
+                            <a href="${ytUrl}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-amber-500 hover:bg-amber-600 text-blue-950 hover:text-black font-bold py-2 px-4 rounded transition-all transform hover:-translate-y-0.5 shadow-sm hover:shadow-md text-center text-sm group">
                                 <span class="mr-2 group-hover:scale-110 transition-transform">&#x25B6;</span> Watch Matches
                             </a>
                         </div>
@@ -1697,7 +1930,7 @@
         function populateBunkai() {
             document.getElementById('bunkaiGrid').innerHTML = bunkaiList.map(item => {
                 return `
-                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow bg-white">
+                    <div class="border rounded-xl shadow-sm overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-300 bg-white">
                         <div class="h-3 w-full ${item.color}"></div>
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
@@ -1707,7 +1940,7 @@
                                     <span class="text-xs bg-slate-100 px-2 py-1 rounded text-slate-600 whitespace-nowrap">${item.creator}</span>
                                 </div>
                             </div>
-                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors group text-sm">
+                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="mt-2 flex items-center justify-center w-full bg-amber-500 hover:bg-amber-600 text-blue-950 hover:text-black font-bold py-2 px-4 rounded transition-all transform hover:-translate-y-0.5 shadow-sm hover:shadow-md text-center text-sm group">
                                 <span class="mr-2 group-hover:scale-110 transition-transform">&#x25B6;</span> Watch on YouTube
                             </a>
                         </div>
@@ -1721,39 +1954,46 @@
         function setupCanvas(id) {
             const canvas = document.getElementById(id);
             if (!canvas) return null;
-            // Logical coordinate space — all drawing functions use 300x250
             const CW = 300, CH = 250;
+            
+            // Get screen space size
             const displayW = canvas.clientWidth || CW;
             const displayH = Math.round(displayW * (5 / 6));
-            canvas.width = displayW;
-            canvas.height = displayH;
+            
+            // Backing store resolution based on device pixel ratio
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = Math.floor(displayW * dpr);
+            canvas.height = Math.floor(displayH * dpr);
+            
             const ctx = canvas.getContext('2d');
-            // Scale so pixel coords always map to 300x250 logical space
-            ctx.scale(displayW / CW, displayH / CH);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr * (displayW / CW), dpr * (displayH / CH));
             ctx.clearRect(0, 0, CW, CH);
 
-            ctx.strokeStyle = '#f8fafc';
-            ctx.lineWidth = 2;
+            const isDark = document.documentElement.classList.contains('dark');
+            ctx.strokeStyle = isDark ? 'rgba(248, 250, 252, 0.03)' : 'rgba(15, 23, 42, 0.04)';
+            ctx.lineWidth = 1.5;
             for (let i = 0; i <= CW; i += 25) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, CH); ctx.stroke(); }
             for (let j = 0; j <= CH; j += 25) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(CW, j); ctx.stroke(); }
 
             ctx.beginPath();
             ctx.moveTo(20, 220);
             ctx.lineTo(280, 220);
-            ctx.strokeStyle = '#cbd5e1';
+            ctx.strokeStyle = isDark ? '#182452' : '#cbd5e1';
             ctx.lineWidth = 3;
             ctx.lineCap = 'round';
             ctx.stroke();
 
             ctx.beginPath();
             ctx.ellipse(150, 220, 90, 8, 0, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.05)';
+            ctx.fillStyle = isDark ? 'rgba(0, 0, 0, 0.25)' : 'rgba(15, 23, 42, 0.05)';
             ctx.fill();
 
             return { ctx, w: CW, h: CH };
         }
 
         function drawAnnotation(ctx, text, x, y, align = 'center') {
+            const isDark = document.documentElement.classList.contains('dark');
             ctx.font = 'bold 11px Inter, sans-serif';
             ctx.textAlign = align;
             const metrics = ctx.measureText(text);
@@ -1763,12 +2003,12 @@
             const bgY = y - 15;
 
             ctx.shadowColor = 'transparent';
-            ctx.fillStyle = '#f1f5f9';
+            ctx.fillStyle = isDark ? '#182452' : '#f1f5f9';
             ctx.beginPath();
             ctx.roundRect(bgX, bgY, w, h, 6);
             ctx.fill();
 
-            ctx.fillStyle = '#0f172a';
+            ctx.fillStyle = isDark ? '#f8fafc' : '#0f172a';
             ctx.fillText(text, x, y);
         }
 
@@ -1776,12 +2016,13 @@
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
-            const darkColor = '#0f172a';
-            const midColor = '#1e293b';
-            const lightColor = '#64748b';
-            const gold = '#f59e0b';
+            const isDark = document.documentElement.classList.contains('dark');
+            const darkColor = isDark ? '#f8fafc' : '#0f172a';
+            const midColor = isDark ? '#cbd5e1' : '#1e293b';
+            const lightColor = isDark ? '#94a3b8' : '#64748b';
+            const gold = '#c99a2e';
 
-            ctx.shadowColor = 'rgba(15, 23, 42, 0.25)';
+            ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(15, 23, 42, 0.25)';
             ctx.shadowBlur = 10;
             ctx.shadowOffsetX = 3;
             ctx.shadowOffsetY = 5;
@@ -1817,7 +2058,7 @@
             ctx.moveTo(spineTop.x - 8, spineTop.y - 5);
             ctx.lineTo(spineTop.x, spineTop.y + 12);
             ctx.lineTo(spineTop.x + 8, spineTop.y - 5);
-            ctx.strokeStyle = '#ffffff';
+            ctx.strokeStyle = isDark ? '#101a3c' : '#ffffff';
             ctx.lineWidth = 2;
             ctx.stroke();
 
@@ -1835,7 +2076,7 @@
             ctx.lineWidth = 4;
             ctx.stroke();
 
-            ctx.shadowColor = 'rgba(15, 23, 42, 0.25)';
+            ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(15, 23, 42, 0.25)';
             ctx.strokeStyle = midColor;
             ctx.fillStyle = midColor;
 
@@ -1868,8 +2109,9 @@
         }
 
         function drawActionLines(ctx, startX, startY, endX, endY) {
+            const isDark = document.documentElement.classList.contains('dark');
             ctx.shadowColor = 'transparent';
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.5)';
+            ctx.strokeStyle = isDark ? 'rgba(148, 163, 184, 0.3)' : 'rgba(148, 163, 184, 0.5)';
             ctx.lineWidth = 2;
             ctx.setLineDash([8, 6]);
             ctx.beginPath();
