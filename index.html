@@ -6,8 +6,8 @@
     <meta name="description" content="A complete, single-page student manual for Traditional Tang Soo Do Moo Duk Kwan students, covering history, curriculum, terminology, techniques, forms, bunkai, and sparring.">
     <title>Traditional Tang Soo Do</title>
     <script>
-        // Inline dark mode check to prevent screen flash
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        // Inline dark mode check to prevent screen flash (defaults to light mode unless dark is explicitly chosen)
+        if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -46,7 +46,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FAF9F6;
+            background-color: #ffffff;
             color: #1e293b;
             transition: background-color 200ms, color 200ms;
         }
@@ -227,7 +227,7 @@
         }
     </style>
 </head>
-<body class="flex flex-col md:flex-row h-screen overflow-hidden bg-[#FAF9F6] relative">
+<body class="flex flex-col md:flex-row h-screen overflow-hidden bg-white relative">
 
     <!-- Mobile Header -->
     <header class="md:hidden bg-blue-900 text-white flex justify-between items-center p-4 shadow-md z-40 shrink-0">
@@ -330,7 +330,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 w-full bg-[#FAF9F6] h-full overflow-y-auto relative scroll-smooth transition-colors duration-200">
+    <main class="flex-1 w-full bg-white h-full overflow-y-auto relative scroll-smooth transition-colors duration-200">
 
         <section id="sec-origins" class="p-4 sm:p-6 md:p-12 max-w-6xl mx-auto block">
             <div class="mb-10">
@@ -1098,6 +1098,30 @@
                         <li>Spar with composure (<strong>Chung Shin Tong Il</strong>), never anger. Lost a point? Let it go instantly.</li>
                         <li>Score clean and controlled — excessive force concedes the point in traditional rules.</li>
                         <li>Commit fully to scoring techniques so judges see them clearly; half-techniques don't count.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                    <h4 class="font-bold text-lg text-blue-900 mb-3 border-b pb-2">Advanced Tactics &amp; Feints</h4>
+                    <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                        <li>Use shoulder movements, head movement, or footwork feints to draw a reaction and open target zones.</li>
+                        <li>Intentionally leave a target open (e.g., lowering your guard slightly) to lure your opponent, then step back and counter.</li>
+                        <li>Always attack in combinations (min. 3 techniques) to overwhelm their defensive guard.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                    <h4 class="font-bold text-lg text-blue-900 mb-3 border-b pb-2">Adapting to Opponents</h4>
+                    <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                        <li>Against taller fighters, use lateral footwork to close distance inside their reach and work hand strikes.</li>
+                        <li>Against shorter fighters, use defensive linear front/side kicks to control range and keep them out.</li>
+                        <li>Against aggressive chargers, step off-line at 45° angles to counter rather than backing up.</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
+                    <h4 class="font-bold text-lg text-blue-900 mb-3 border-b pb-2">Ring Control &amp; Strategy</h4>
+                    <ul class="text-sm text-slate-700 space-y-2 list-disc pl-5">
+                        <li>Anchor yourself in the center of the ring to limit your opponent's space and force them to circle.</li>
+                        <li>Avoid walking straight back; if pressed near the boundary, pivot and circle out immediately.</li>
+                        <li>Pace your breathing during matches (<strong>Ho Hoop</strong>) — use active footwork to recover stamina.</li>
                     </ul>
                 </div>
             </div>
