@@ -2052,10 +2052,21 @@
             ctx.clearRect(0, 0, CW, CH);
 
             const isDark = document.documentElement.classList.contains('dark');
-            ctx.strokeStyle = isDark ? 'rgba(248, 250, 252, 0.03)' : 'rgba(15, 23, 42, 0.04)';
-            ctx.lineWidth = 1.5;
-            for (let i = 0; i <= CW; i += 25) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, CH); ctx.stroke(); }
-            for (let j = 0; j <= CH; j += 25) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(CW, j); ctx.stroke(); }
+            
+            // Draw a high-end blueprint grid (super faint coordinate lines + dot intersections)
+            ctx.strokeStyle = isDark ? 'rgba(248, 250, 252, 0.02)' : 'rgba(15, 23, 42, 0.03)';
+            ctx.lineWidth = 1;
+            for (let i = 50; i < CW; i += 50) { ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, CH); ctx.stroke(); }
+            for (let j = 50; j < CH; j += 50) { ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(CW, j); ctx.stroke(); }
+            
+            ctx.fillStyle = isDark ? 'rgba(248, 250, 252, 0.07)' : 'rgba(15, 23, 42, 0.1)';
+            for (let i = 25; i < CW; i += 25) {
+                for (let j = 25; j < CH; j += 25) {
+                    ctx.beginPath();
+                    ctx.arc(i, j, 1, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
 
             ctx.beginPath();
             ctx.moveTo(20, 220);
@@ -2093,7 +2104,7 @@
             ctx.fillText(text, x, y);
         }
 
-        function drawAdvancedFigure(ctx, head, spineTop, spineBottom, armBack, armFront, legBack, legFront) {
+        function drawAdvancedFigure(ctx, head, spineTop, spineBottom, armBack, armFront, legBack, legFront, weightBack = 0, weightFront = 0) {
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
 
@@ -2102,11 +2113,44 @@
             const midColor = isDark ? '#cbd5e1' : '#1e293b';
             const lightColor = isDark ? '#94a3b8' : '#64748b';
             const gold = '#c99a2e';
+            const skinColor = isDark ? '#ffd3a3' : '#e0a96d';
 
-            ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(15, 23, 42, 0.25)';
-            ctx.shadowBlur = 10;
-            ctx.shadowOffsetX = 3;
-            ctx.shadowOffsetY = 5;
+            // Draw weight distribution pressure rings under the feet
+            if (weightBack > 0 || weightFront > 0) {
+                ctx.save();
+                ctx.shadowColor = 'transparent';
+                
+                const drawPressureRing = (x, y, weight) => {
+                    const radius = 12 + weight * 0.28;
+                    const grad = ctx.createRadialGradient(x, y, 2, x, y, radius);
+                    const color = isDark ? 'rgba(201, 154, 46, ' : 'rgba(123, 30, 43, ';
+                    
+                    grad.addColorStop(0, color + '0.45)');
+                    grad.addColorStop(0.5, color + '0.15)');
+                    grad.addColorStop(1, color + '0)');
+                    
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.ellipse(x, y, radius, radius * 0.28, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.strokeStyle = isDark ? 'rgba(201, 154, 46, 0.35)' : 'rgba(123, 30, 43, 0.25)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.ellipse(x, y, radius, radius * 0.28, 0, 0, Math.PI * 2);
+                    ctx.stroke();
+                };
+
+                if (weightBack > 0) drawPressureRing(legBack.ex + 5, legBack.ey, weightBack);
+                if (weightFront > 0) drawPressureRing(legFront.ex + 6, legFront.ey, weightFront);
+                
+                ctx.restore();
+            }
+
+            ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.45)' : 'rgba(15, 23, 42, 0.2)';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 4;
 
             ctx.strokeStyle = lightColor;
             ctx.fillStyle = lightColor;
@@ -2117,7 +2161,11 @@
             ctx.lineTo(armBack.ex, armBack.ey);
             ctx.lineWidth = 11;
             ctx.stroke();
+            
+            ctx.save();
+            ctx.fillStyle = skinColor;
             ctx.beginPath(); ctx.arc(armBack.ex, armBack.ey, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
 
             ctx.beginPath();
             ctx.moveTo(spineBottom.x, spineBottom.y);
@@ -2136,11 +2184,18 @@
 
             ctx.shadowColor = 'transparent';
             ctx.beginPath();
+            ctx.moveTo(spineTop.x, spineTop.y + 10);
+            ctx.lineTo(spineBottom.x, spineBottom.y - 4);
+            ctx.strokeStyle = isDark ? '#101a3c' : '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
             ctx.moveTo(spineTop.x - 8, spineTop.y - 5);
             ctx.lineTo(spineTop.x, spineTop.y + 12);
             ctx.lineTo(spineTop.x + 8, spineTop.y - 5);
             ctx.strokeStyle = isDark ? '#101a3c' : '#ffffff';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2.5;
             ctx.stroke();
 
             ctx.beginPath();
@@ -2149,6 +2204,7 @@
             ctx.strokeStyle = gold;
             ctx.lineWidth = 7;
             ctx.stroke();
+            
             ctx.beginPath();
             ctx.moveTo(spineBottom.x + 10, spineBottom.y);
             ctx.lineTo(spineBottom.x + 16, spineBottom.y + 18);
@@ -2157,7 +2213,7 @@
             ctx.lineWidth = 4;
             ctx.stroke();
 
-            ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.4)' : 'rgba(15, 23, 42, 0.25)';
+            ctx.shadowColor = isDark ? 'rgba(0, 0, 0, 0.45)' : 'rgba(15, 23, 42, 0.2)';
             ctx.strokeStyle = midColor;
             ctx.fillStyle = midColor;
 
@@ -2175,11 +2231,18 @@
             ctx.lineTo(armFront.ex, armFront.ey);
             ctx.lineWidth = 12;
             ctx.stroke();
+            
+            ctx.save();
+            ctx.fillStyle = skinColor;
             ctx.beginPath(); ctx.arc(armFront.ex, armFront.ey, 7, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
 
             ctx.beginPath();
             ctx.arc(head.x, head.y, 18, 0, Math.PI * 2);
-            ctx.fillStyle = darkColor;
+            const headGrad = ctx.createRadialGradient(head.x - 3, head.y - 3, 2, head.x, head.y, 18);
+            headGrad.addColorStop(0, isDark ? '#4b5563' : '#475569');
+            headGrad.addColorStop(1, darkColor);
+            ctx.fillStyle = headGrad;
             ctx.fill();
 
             ctx.shadowColor = 'transparent';
@@ -2191,11 +2254,8 @@
 
         function drawActionLines(ctx, startX, startY, endX, endY) {
             const isDark = document.documentElement.classList.contains('dark');
+            ctx.save();
             ctx.shadowColor = 'transparent';
-            ctx.strokeStyle = isDark ? 'rgba(148, 163, 184, 0.3)' : 'rgba(148, 163, 184, 0.5)';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([8, 6]);
-            ctx.beginPath();
 
             const dx = endX - startX;
             const dy = endY - startY;
@@ -2204,13 +2264,66 @@
             const ny = dx / length;
             const offset = 12;
 
-            ctx.moveTo(startX + nx * offset, startY + ny * offset);
-            ctx.lineTo(endX - dx * 0.2 + nx * offset, endY - dy * 0.2 + ny * offset);
-            ctx.moveTo(startX - nx * offset, startY - ny * offset);
-            ctx.lineTo(endX - dx * 0.2 - nx * offset, endY - dy * 0.2 - ny * offset);
+            // Draw glowing speed trail (cone flare)
+            const trailGrad = ctx.createLinearGradient(startX, startY, endX, endY);
+            trailGrad.addColorStop(0, 'rgba(201, 154, 46, 0)');
+            trailGrad.addColorStop(1, isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.08)');
+            ctx.fillStyle = trailGrad;
 
+            ctx.beginPath();
+            ctx.moveTo(startX + nx * offset, startY + ny * offset);
+            ctx.lineTo(endX + nx * (offset - 4), endY + ny * (offset - 4));
+            ctx.lineTo(endX - nx * (offset - 4), endY - ny * (offset - 4));
+            ctx.lineTo(startX - nx * offset, startY - ny * offset);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw dashed guidance speed lines
+            ctx.strokeStyle = isDark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(148, 163, 184, 0.4)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([8, 6]);
+            ctx.beginPath();
+            ctx.moveTo(startX + nx * offset, startY + ny * offset);
+            ctx.lineTo(endX - dx * 0.15 + nx * offset, endY - dy * 0.15 + ny * offset);
+            ctx.moveTo(startX - nx * offset, startY - ny * offset);
+            ctx.lineTo(endX - dx * 0.15 - nx * offset, endY - dy * 0.15 - ny * offset);
             ctx.stroke();
-            ctx.setLineDash([]);
+            ctx.restore();
+        }
+
+        function drawTargetReticle(ctx, cx, cy) {
+            ctx.save();
+            ctx.shadowColor = 'transparent';
+            
+            // Outer HUD circular guide
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.25)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Inner solid center dot
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // HUD Crosshair tick markers
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 1.5;
+            const tickLen = 4;
+            const dist = 14;
+            
+            // Top
+            ctx.beginPath(); ctx.moveTo(cx, cy - dist + tickLen); ctx.lineTo(cx, cy - dist - 2); ctx.stroke();
+            // Bottom
+            ctx.beginPath(); ctx.moveTo(cx, cy + dist - tickLen); ctx.lineTo(cx, cy + dist + 2); ctx.stroke();
+            // Left
+            ctx.beginPath(); ctx.moveTo(cx - dist + tickLen, cy); ctx.lineTo(cx - dist - 2, cy); ctx.stroke();
+            // Right
+            ctx.beginPath(); ctx.moveTo(cx + dist - tickLen, cy); ctx.lineTo(cx + dist + 2, cy); ctx.stroke();
+            
+            ctx.restore();
         }
 
         function drawAllTechniques() {
@@ -2229,7 +2342,8 @@
                 { sx: 110, sy: 80, jx: 85, jy: 100, ex: 95, ey: 125 },
                 { sx: 110, sy: 80, jx: 150, jy: 85, ex: 190, ey: 105 },
                 { jx: 65, jy: 175, ex: 50, ey: 218 },
-                { jx: 160, jy: 175, ex: 160, ey: 218 }
+                { jx: 160, jy: 175, ex: 160, ey: 218 },
+                40, 60
             );
             drawAnnotation(ctx, '60% Front', 175, 205, 'left');
             drawAnnotation(ctx, '40% Back', 45, 205, 'right');
@@ -2243,7 +2357,8 @@
                 { sx: 115, sy: 90, jx: 130, jy: 105, ex: 150, ey: 95 },
                 { sx: 115, sy: 90, jx: 140, jy: 75, ex: 180, ey: 85 },
                 { jx: 80, jy: 185, ex: 80, ey: 218 },
-                { jx: 160, jy: 195, ex: 190, ey: 218 }
+                { jx: 160, jy: 195, ex: 190, ey: 218 },
+                70, 30
             );
             drawAnnotation(ctx, '70% Back', 70, 205, 'right');
             drawAnnotation(ctx, '30% Front', 200, 205, 'left');
@@ -2257,7 +2372,8 @@
                 { sx: 150, sy: 100, jx: 120, jy: 125, ex: 140, ey: 145 },
                 { sx: 150, sy: 100, jx: 180, jy: 125, ex: 160, ey: 145 },
                 { jx: 100, jy: 185, ex: 80, ey: 218 },
-                { jx: 200, jy: 185, ex: 220, ey: 218 }
+                { jx: 200, jy: 185, ex: 220, ey: 218 },
+                50, 50
             );
             drawAnnotation(ctx, '50% / 50%', 150, 205, 'center');
         }
@@ -2275,11 +2391,7 @@
                 { jx: 155, jy: 175, ex: 155, ey: 218 }
             );
 
-            ctx.shadowColor = 'transparent';
-            ctx.beginPath(); ctx.arc(245, 95, 12, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)'; ctx.lineWidth = 3; ctx.stroke();
-            ctx.beginPath(); ctx.arc(245, 95, 4, 0, Math.PI * 2);
-            ctx.fillStyle = '#ef4444'; ctx.fill();
+            drawTargetReticle(ctx, 245, 95);
         }
 
         function drawHighPunch(id) {
@@ -2295,11 +2407,7 @@
                 { jx: 155, jy: 175, ex: 155, ey: 218 }
             );
 
-            ctx.shadowColor = 'transparent';
-            ctx.beginPath(); ctx.arc(230, 55, 12, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(239, 68, 68, 0.4)'; ctx.lineWidth = 3; ctx.stroke();
-            ctx.beginPath(); ctx.arc(230, 55, 4, 0, Math.PI * 2);
-            ctx.fillStyle = '#ef4444'; ctx.fill();
+            drawTargetReticle(ctx, 230, 55);
         }
 
     </script>
