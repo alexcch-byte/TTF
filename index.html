@@ -1878,14 +1878,52 @@
             "Dwee Ro Tora": "Tora.wav",
             // Leg Techniques — full-term audio used for prefix entry
             "E Dan": "E-Dan_Cha_Gi.wav",
+            // Newly mapped/fallback terminology audio
+            "Sun Beh Nim": "Sun_Beh_Nim_Kay_Kyung_Ret.wav",
+            "Wheng Jin": "When_Jin_Kong_Kyuck.wav",
+            "Soo Do": "Soo_Do_Kong_Kyuck.wav",
+            "Bit Cha Ki": "Peet_Cha_Gi.wav",
+            "Sohn Mok": "Sohn_Mok_Deung_Kong_Kyuck.wav",
+            "Choon Bee": "Jhoon%20Bee%20Jaseh.wav",
+            "Yuk Soo": "Yuk_Soo_Do_Kong_Kyuck.wav",
+            "Dwee Dull Ryo Cha Gi": "Dwi_Yup_Hu_Ri_Gi.wav",
+            "Tok": "Tuk.wav",
         };
 
-        function playAudio(file) {
-            if (!file) return;
-            const audio = new Audio(audioBase + file);
-            audio.play().catch(err => {
-                console.warn("Audio playback failed:", err);
-            });
+        function playAudio(file, fallbackText) {
+            if (file) {
+                const audio = new Audio(audioBase + file);
+                audio.play().catch(err => {
+                    console.warn("Audio playback failed, trying TTS:", err);
+                    playTTS(fallbackText);
+                });
+            } else if (fallbackText) {
+                playTTS(fallbackText);
+            }
+        }
+
+        function playTTS(text) {
+            const cleanText = text.split('/')[0].trim();
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.lang = 'ko-KR';
+                
+                // Get voices (note: getVoices can be async, so we also setup an event listener or fallback if empty)
+                let voices = window.speechSynthesis.getVoices();
+                let koVoice = voices.find(voice => voice.lang.startsWith('ko'));
+                if (koVoice) {
+                    utterance.voice = koVoice;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                const gTTSUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=ko&client=tw-ob&q=" + encodeURIComponent(cleanText);
+                const audio = new Audio(gTTSUrl);
+                audio.play().catch(err => {
+                    console.error("TTS playback failed:", err);
+                });
+            }
         }
 
         function buildTermRow(term) {
@@ -1894,10 +1932,9 @@
             if (term.category === "Hand Techniques" || term.category === "Leg Techniques") badgeCol = "bg-amber-100 text-amber-800";
             if (term.category === "Stances") badgeCol = "bg-blue-100 text-blue-800";
             if (term.category === "Anatomy") badgeCol = "bg-emerald-100 text-emerald-800";
-            const audioFile = audioMap[term.korean];
-            const audioBtn = audioFile
-                ? `<button onclick="playAudio('${audioFile}')" class="ml-2 text-base leading-none hover:opacity-70 focus:outline-none align-middle" title="Play pronunciation" aria-label="Play pronunciation of ${term.korean}">🔊</button>`
-                : '';
+            const audioFile = audioMap[term.korean] || '';
+            const escapedKorean = term.korean.replace(/'/g, "\\'");
+            const audioBtn = `<button onclick="playAudio('${audioFile}', '${escapedKorean}')" class="ml-2 text-base leading-none hover:opacity-70 focus:outline-none align-middle" title="Play pronunciation" aria-label="Play pronunciation of ${term.korean}">🔊</button>`;
             return `<tr>
                 <td class="font-bold text-blue-900">${term.korean}${audioBtn}</td>
                 <td>${term.english}</td>
