@@ -1931,14 +1931,162 @@
             }
         }
 
+        const hangulMap = {
+            "tang soo do": "탕수도",
+            "soo bahk do": "수박도",
+            "moo duk kwan": "무덕관",
+            "do jang": "도장",
+            "do bok": "도복",
+            "kwan jang nim": "관장님",
+            "sa bom nim": "사범님",
+            "kyo sa nim": "교사님",
+            "cho kyo nim": "조교님",
+            "shim sa kwan nim": "심사관님",
+            "sun beh nim": "선배님",
+            "cho bo ja": "초보자",
+            "yu gup ja": "유급자",
+            "yu dan ja": "유단자",
+            "ko dan ja": "고단자",
+            "hu beh": "후배",
+            "sun beh": "선배",
+            "kee cho": "기초",
+            "hyung": "형",
+            "ki hap": "기합",
+            "choong shim": "중심",
+            "chung seh": "자세",
+            "neh gung": "내공",
+            "weh gung": "외공",
+            "shim gung": "심공",
+            "pyung ahn": "평안",
+            "moo do": "무도",
+            "shim sa": "심사",
+            "ku ryung": "구령",
+            "kuk gi": "국기",
+            "kwan gi": "관기",
+            "kyok pa": "격파",
+            "dae ryun": "대련",
+            "il soo sik": "일수식",
+            "ho sin sul": "호신술",
+            "soo gi": "수기",
+            "jok gi": "족기",
+            "cha ryut": "차렷",
+            "choon bee": "준비",
+            "jhoon bee": "준비",
+            "shi jock": "시작",
+            "ba ro": "바로",
+            "dwee ro tora": "뒤로 돌아",
+            "dwi ro tora": "뒤로 돌아",
+            "shio": "쉬어",
+            "anju": "안조",
+            "muk nyum": "묵념",
+            "kam sa hap ni da": "감사합니다",
+            "kyung ret": "경례",
+            "tora": "돌아",
+            "shi sun": "시선",
+            "e la sut": "일어섯",
+            "chungle yase": "전굴 자세",
+            "chun kul soh ki": "전굴 서기",
+            "hugal yase": "후굴 자세",
+            "hu kul soh ki": "후굴 서기",
+            "keema yase": "기마 자세",
+            "kee mah soh ki": "기마 서기",
+            "sakorip yase": "사고립 자세",
+            "kyo cha rip": "교차립",
+            "jaseh": "자세",
+            "soh ki": "서기",
+            "mahk kee": "막기",
+            "mahkkee": "막기",
+            "makgi": "막기",
+            "makgy": "막기",
+            "makkee": "막기",
+            "makhee": "막기",
+            "kong kyuk": "공격",
+            "kong kyuck": "공격",
+            "cha gi": "차기",
+            "chagi": "차기",
+            "soo do": "수도",
+            "kwan soo": "관수",
+            "yuk soo": "역수",
+            "ssang soo": "쌍수",
+            "sang soo": "쌍수",
+            "podo": "뻗어",
+            "oll ri gi": "올리기",
+            "dull ryo": "돌려",
+            "hu ri gi": "후리기",
+            "moo roop": "무릎",
+            "bit": "빗",
+            "peet": "빗",
+            "penta": "번개",
+            "punta": "번개",
+            "dan jun": "단전",
+            "pal coop": "팔꿈치",
+            "pahl coop": "팔꿈치",
+            "twi kumchi": "뒤꿈치",
+            "mu rup": "무릎",
+            "myung chi": "명치",
+            "in choong": "인중",
+            "bal deung": "발등",
+            "bal mok": "발목",
+            "pahl mok": "팔목",
+            "chu mok": "주먹",
+            "bahl ga rak": "발가락",
+            "ka sun": "가슴",
+            "swe gol": "쇄골",
+            "sohn ka rak": "손가락",
+            "shim jang": "심장",
+            "o ka e": "어깨",
+            "sohn mok": "손목",
+            "da ri": "다리",
+            "hurri": "허리",
+            "sang dan": "상단",
+            "choong dan": "중단",
+            "ha dan": "하단",
+            "ahneso": "안에서",
+            "pahkeso": "밖에서",
+            "ahnu ro": "안으로",
+            "pahku ro": "밖으로",
+            "wheng jin": "횡진",
+            "yuk jin": "역진",
+            "o ring jok": "오른쪽",
+            "wen jok": "왼쪽",
+            "ahp": "앞",
+            "yup": "옆",
+            "dwi": "뒤",
+            "dwee": "뒤",
+            "hu jin": "후진",
+            "chun jin": "전진",
+            "e dan": "이단",
+            "pal": "팔",
+            "bahl": "발",
+            "ko": "코",
+            "pyo": "뼈",
+            "sohn": "손",
+            "nun": "눈",
+            "kwi": "귀",
+            "tok": "턱",
+            "tuk": "턱"
+        };
+
+        function convertRomanToHangul(text) {
+            let result = text.toLowerCase();
+            const keys = Object.keys(hangulMap).sort((a, b) => b.length - a.length);
+            for (const key of keys) {
+                const escapedKey = key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                const regex = new RegExp('\\b' + escapedKey + '\\b', 'gi');
+                result = result.replace(regex, hangulMap[key]);
+            }
+            return result;
+        }
+
         function playTTS(text) {
             const cleanText = text.split('/')[0].trim();
+            const hangulText = convertRomanToHangul(cleanText);
+            
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(cleanText);
+                const utterance = new SpeechSynthesisUtterance(hangulText);
                 utterance.lang = 'ko-KR';
                 
-                // Get voices (note: getVoices can be async, so we also setup an event listener or fallback if empty)
                 let voices = window.speechSynthesis.getVoices();
                 let koVoice = voices.find(voice => voice.lang.startsWith('ko'));
                 if (koVoice) {
@@ -1947,7 +2095,7 @@
                 
                 window.speechSynthesis.speak(utterance);
             } else {
-                const gTTSUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=ko&client=tw-ob&q=" + encodeURIComponent(cleanText);
+                const gTTSUrl = "https://translate.google.com/translate_tts?ie=UTF-8&tl=ko&client=tw-ob&q=" + encodeURIComponent(hangulText);
                 const audio = new Audio(gTTSUrl);
                 audio.play().catch(err => {
                     console.error("TTS playback failed:", err);
